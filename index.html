@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tablero de Información de Estudiantes</title>
+  <style>
+    /* ----- ESTILOS GLOBALES ------------------------------------------------- */
+    body {margin:0;font-family:Arial, sans-serif;background:#eeeeee;}
+    .top-bar{background:#f1f1f1;height:60px;border-bottom:3px solid #888;position:relative;z-index:10;}
+    #botonAcceder{position:absolute;top:8px;right:15px;padding:12px 18px;font-size:17px;border:none;border-radius:15px;background:#ff6f61;cursor:pointer;box-shadow:1px 1px 3px rgba(0,0,0,.2);}
+    .layout{display:flex;height:calc(100vh - 60px);}  
+
+    /* ----- SIDEBAR ---------------------------------------------------------- */
+    #sidebar{position:fixed;top:0;right:-320px;width:280px;height:100%;background:#2c3e50;color:#fff;padding:20px;box-shadow:-2px 0 5px rgba(0,0,0,.5);transition:right .3s ease;z-index:20;display:flex;flex-direction:column}
+    #sidebar.open{right:0}
+    #sidebar .close-btn{position:absolute;top:30px;left:15px;font-size:24px;cursor:pointer;user-select:none}
+    #sidebar input{padding:10px;font-size:16px;border:none;border-radius:4px;margin-bottom:20px}
+    #sidebar button{background:#e74c3c;border:none;padding:12px;font-size:16px;color:#fff;border-radius:5px;cursor:pointer}
+
+    /* ----- PANELES PRINCIPALES --------------------------------------------- */
+    .main{flex:1;position:relative;padding:40px;background:#eeeeee;overflow-y:auto}
+    .corner-shape.left,.corner-shape.right{position:fixed;bottom:0;width:80px;height:80px;z-index:0}
+    .corner-shape.left{left:0;background:#ff4b4b;border-top-right-radius:40px}
+    .corner-shape.right{right:0;background:#0099ff;border-top-left-radius:40px}
+    .vertical-line{position:absolute;top:60px;bottom:0;width:4px;background:#777;z-index:1}
+    .vertical-line.left{left:20px}.vertical-line.right{right:20px}
+
+    #seccionOpciones,#seccionEstudiantes,#seccionProfesores{display:none;background:#fff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1);margin:30px auto;padding:20px 40px;max-width:700px;text-align:center;position:relative}
+    #seccionOpciones{max-width:600px}
+
+    .boton-opcion{width:100%;padding:12px;margin:10px 0;background:#d9d9d9;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+    .boton-atras{position:absolute;top:10px;left:10px;width:40px;height:40px;background:#ff4b4b;color:#fff;border:none;border-radius:10px;font-size:20px;cursor:pointer;user-select:none}
+
+    #botonAgregarItem{width:50px;height:50px;border:none;border-radius:50%;background:#0099ff;color:#fff;font-size:28px;font-weight:bold;line-height:50px;cursor:pointer;margin-bottom:20px}
+
+    #listaItems,#listaProfesores{list-style:none;padding:0;margin:0 auto;max-width:650px;text-align:left}
+    #listaItems li,#listaProfesores li{display:flex;align-items:center;margin:10px 0;font-size:16px}
+    #listaItems input{width:110px;padding:6px 8px;margin:0 6px;border:1px solid #ccc;border-radius:5px}
+    #listaItems button{width:35px;height:35px;margin-left:8px;border:none;border-radius:5px;font-size:18px;color:#fff;cursor:pointer}
+    .enviar{background:#28a745}.editar{background:#007bff}.eliminar{background:#ff4b4b}
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar"><button id="botonAcceder">Acceder</button></div>
+  <div class="vertical-line left"></div><div class="vertical-line right"></div>
+
+  <!-- SIDEBAR LOGIN -->
+  <div id="sidebar">
+    <span class="close-btn" id="cerrarSidebar">&times;</span>
+    <h2>Ingrese Contraseña</h2>
+    <input type="password" id="inputPassword" placeholder="Contraseña" />
+    <button id="submitPassword">Enviar</button>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="layout">
+    <div class="main">
+      <div class="corner-shape left"></div><div class="corner-shape right"></div>
+
+      <!-- OPCIONES -->
+      <div id="seccionOpciones">
+        <button class="boton-atras" id="volverLogin">&larr;</button>
+        <h2>Opciones</h2>
+        <button class="boton-opcion" id="moduloProfesores">Módulo de Profesores</button>
+        <button class="boton-opcion" id="moduloRecepcion">Módulo de Recepción</button>
+        <button class="boton-opcion" id="moduloTV">Módulo de Televisión</button>
+      </div>
+
+      <!-- RECEPCIÓN -->
+      <div id="seccionEstudiantes">
+        <button class="boton-atras" id="volverOpciones">&larr;</button>
+        <h1>Módulo de Recepción</h1>
+        <button id="botonAgregarItem">+</button>
+        <ul id="listaItems"></ul>
+      </div>
+
+      <!-- PROFESORES -->
+      <div id="seccionProfesores">
+        <button class="boton-atras" id="volverOpcionesDesdeProfesores">&larr;</button>
+        <h1>Módulo de Profesores</h1>
+        <ul id="listaProfesores"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS --------------------------------------------------------------- -->
+  <script type="module">
+    /* ----------- Firebase inicialización ------------ */
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey:"AIzaSyDbAUn8UFkKwnc84Zzv58RUdb41-jwntEk",
+      authDomain:"student-info-board.firebaseapp.com",
+      projectId:"student-info-board",
+      storageBucket:"student-info-board.appspot.com",
+      messagingSenderId:"909163093372",
+      appId:"1:909163093372:web:531000556cf9adf3f398f9",
+      databaseURL:"https://student-info-board-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+    const dbRef = ref(db,'items'); // almacena lista completa
+
+    /* ----------- REFERENCIAS DOM ------------ */
+    const botonAcceder=document.getElementById('botonAcceder');
+    const sidebar=document.getElementById('sidebar');
+    const cerrarSidebar=document.getElementById('cerrarSidebar');
+    const submitPassword=document.getElementById('submitPassword');
+    const inputPassword=document.getElementById('inputPassword');
+
+    const secOpciones=document.getElementById('seccionOpciones');
+    const secEst=document.getElementById('seccionEstudiantes');
+    const secProf=document.getElementById('seccionProfesores');
+    const volverLogin=document.getElementById('volverLogin');
+    const volverOpc=document.getElementById('volverOpciones');
+    const volverOpcProf=document.getElementById('volverOpcionesDesdeProfesores');
+    const btnAdd=document.getElementById('botonAgregarItem');
+    const listaItems=document.getElementById('listaItems');
+    const listaProfe=document.getElementById('listaProfesores');
+
+    let auth=false;
+
+    /* ----------- FUNCIONES AUX  ------------ */
+    const show=e=>e.style.display='block';
+    const hide=e=>e.style.display='none';
+
+    function serializarLista(){
+      return Array.from(listaItems.children).map(li=>{
+        const ins=li.querySelectorAll('input[type="text"]');
+        return {input1:ins[0].value,input2:ins[1].value,input3:ins[2].value,input4:ins[3].value,disabled:ins[0].disabled};
+      });
+    }
+
+    function syncFirebase(){ set(dbRef, serializarLista()); }
+
+    /* ----------- SIDEBAR LOGIN ------------ */
+    botonAcceder.onclick=()=>sidebar.classList.add('open');
+    cerrarSidebar.onclick=()=>sidebar.classList.remove('open');
+
+    submitPassword.onclick=()=>{
+      if(inputPassword.value==='NorthHill22'){
+        auth=true; sidebar.classList.remove('open'); hide(botonAcceder); show(secOpciones);
+        // Escucha cambios Firebase y renderiza
+        onValue(dbRef,snap=>renderItems(snap.val()||[]));
+      }else{alert('Contraseña incorrecta');inputPassword.value='';}
+    };
+
+    /* ----------- NAVEGACIÓN  ------------ */
+    volverLogin.onclick=()=>{hide(secOpciones);show(botonAcceder);}  
+    document.getElementById('moduloRecepcion').onclick=()=>{hide(secOpciones);show(secEst);}  
+    document.getElementById('moduloProfesores').onclick=()=>{hide(secOpciones);show(secProf);}  
+    volverOpc.onclick=()=>{hide(secEst);show(secOpciones);}  
+    volverOpcProf.onclick=()=>{hide(secProf);show(secOpciones);}  
+
+    /* ----------- CRUD RECEPCIÓN ------------ */
+    btnAdd.onclick=()=>addItem();
+
+    function renderItems(arr){
+      listaItems.innerHTML=''; listaProfe.innerHTML='';
+      arr.forEach(it=>addItem(it));
+    }
+
+    function addItem(data={}){
+      const li=document.createElement('li');
+      const i1=document.createElement('input'),i2=document.createElement('input'),i3=document.createElement('input'),i4=document.createElement('input');
+      [i1,i2,i3,i4].forEach(i=>i.type='text');
+      const s1=document.createElement('span');s1.textContent=' de ';
+      const s2=document.createElement('span');s2.textContent=' se va con ';
+      const s3=document.createElement('span');s3.textContent=' de ';
+      const bOk=document.createElement('button');bOk.textContent='✓';bOk.className='enviar';
+      const bEd=document.createElement('button');bEd.textContent='✎';bEd.className='editar';
+      const bDel=document.createElement('button');bDel.textContent='×';bDel.className='eliminar';
+      let profLi;
+
+      if(data.input1){[data.input1,data.input2,data.input3,data.input4].forEach((v,idx)=>[i1,i2,i3,i4][idx].value=v);[i1,i2,i3,i4].forEach(i=>i.disabled=true);bOk.style.display='none';profLi=document.createElement('li');profLi.textContent=`${i1.value} de ${i2.value} se va con ${i3.value} de ${i4.value}`;listaProfe.appendChild(profLi);}else bEd.style.display='none';
+
+      bOk.onclick=()=>{
+        if([i1,i2,i3,i4].some(i=>!i.value.trim()))return alert('Completa todos los campos');
+        [i1,i2,i3,i4].forEach(i=>i.disabled=true);bOk.style.display='none';bEd.style.display='inline-block';
+        profLi||=(profLi=document.createElement('li'),listaProfe.appendChild(profLi));
+        profLi.textContent=`${i1.value} de ${i2.value} se va con ${i3.value} de ${i4.value}`;
+        syncFirebase();
+      };
+      bEd.onclick=()=>{[i1,i2,i3,i4].forEach(i=>i.disabled=false);bEd.style.display='none';bOk.style.display='inline-block';profLi?.remove();profLi=null;syncFirebase();};
+      bDel.onclick=()=>{li.remove();profLi?.remove();syncFirebase();};
+
+      li.append(bOk,bEd,i1,s1,i2,s2,i3,s3,i4,bDel);
+      listaItems.appendChild(li);
+      if(!data.input1)i1.focus();
+    }
+  </script>
+</body>
+</html>
