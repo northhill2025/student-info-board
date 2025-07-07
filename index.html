@@ -5,49 +5,259 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tablero de Información de Estudiantes</title>
   <style>
-    /* ----- ESTILOS GLOBALES ------------------------------------------------- */
-    body {margin:0;font-family:Arial, sans-serif;background:#eeeeee;}
-    .top-bar{background:#f1f1f1;height:60px;border-bottom:3px solid #888;position:relative;z-index:10;}
-    #botonAcceder{position:absolute;top:8px;right:15px;padding:12px 18px;font-size:17px;border:none;border-radius:15px;background:#ff6f61;cursor:pointer;box-shadow:1px 1px 3px rgba(0,0,0,.2);}
-    .layout{display:flex;height:calc(100vh - 60px);}  
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #eeeeee;
+    }
 
-    /* ----- SIDEBAR ---------------------------------------------------------- */
-    #sidebar{position:fixed;top:0;right:-320px;width:280px;height:100%;background:#2c3e50;color:#fff;padding:20px;box-shadow:-2px 0 5px rgba(0,0,0,.5);transition:right .3s ease;z-index:20;display:flex;flex-direction:column}
-    #sidebar.open{right:0}
-    #sidebar .close-btn{position:absolute;top:30px;left:15px;font-size:24px;cursor:pointer;user-select:none}
-    #sidebar input{padding:10px;font-size:16px;border:none;border-radius:4px;margin-bottom:20px}
-    #sidebar button{background:#e74c3c;border:none;padding:12px;font-size:16px;color:#fff;border-radius:5px;cursor:pointer}
+    .top-bar {
+      background-color: #f1f1f1;
+      height: 60px;
+      border-bottom: 3px solid #888;
+      position: relative;
+      z-index: 1;
+    }
 
-    /* ----- PANELES PRINCIPALES --------------------------------------------- */
-    .main{flex:1;position:relative;padding:40px;background:#eeeeee;overflow-y:auto}
-    .corner-shape.left,.corner-shape.right{position:fixed;bottom:0;width:80px;height:80px;z-index:0}
-    .corner-shape.left{left:0;background:#ff4b4b;border-top-right-radius:40px}
-    .corner-shape.right{right:0;background:#0099ff;border-top-left-radius:40px}
-    .vertical-line{position:absolute;top:60px;bottom:0;width:4px;background:#777;z-index:1}
-    .vertical-line.left{left:20px}.vertical-line.right{right:20px}
+    #botonAcceder {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      background-color: #ff6f61;
+      color: black;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 15px;
+      font-size: 17px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
 
-    #seccionOpciones,#seccionEstudiantes,#seccionProfesores{display:none;background:#fff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1);margin:30px auto;padding:20px 40px;max-width:700px;text-align:center;position:relative}
-    #seccionOpciones{max-width:600px}
+    .layout {
+      display: flex;
+      height: calc(100vh - 60px);
+      width: 100%;
+    }
 
-    .boton-opcion{width:100%;padding:12px;margin:10px 0;background:#d9d9d9;border:none;border-radius:8px;font-size:16px;cursor:pointer}
-    .boton-atras{position:absolute;top:10px;left:10px;width:40px;height:40px;background:#ff4b4b;color:#fff;border:none;border-radius:10px;font-size:20px;cursor:pointer;user-select:none}
+    .layout .main {
+      display: flex;
+      justify-content: center; /* Centrado horizontal */
+      align-items: flex-start; /* Para que quede más arriba */
+      width: 100%;
+      height: 100%;
+      padding-top: 100px; /* Ajusta según quieras subir/bajar */
+    }
 
-    #botonAgregarItem{width:50px;height:50px;border:none;border-radius:50%;background:#0099ff;color:#fff;font-size:28px;font-weight:bold;line-height:50px;cursor:pointer;margin-bottom:20px}
+    #sidebar {
+      position: fixed;
+      top: 0;
+      right: -320px; /* Hidden by default */
+      width: 280px;
+      height: 100%;
+      background-color: #2c3e50;
+      padding: 20px;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+      transition: right 0.3s ease;
+      z-index: 2;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
 
-    #listaItems,#listaProfesores{list-style:none;padding:0;margin:0 auto;max-width:650px;text-align:left}
-    #listaItems li,#listaProfesores li{display:flex;align-items:center;margin:10px 0;font-size:16px}
-    #listaItems input{width:110px;padding:6px 8px;margin:0 6px;border:1px solid #ccc;border-radius:5px}
-    #listaItems button{width:35px;height:35px;margin-left:8px;border:none;border-radius:5px;font-size:18px;color:#fff;cursor:pointer}
-    .enviar{background:#28a745}.editar{background:#007bff}.eliminar{background:#ff4b4b}
+    #sidebar.open {
+      right: 0; /* Visible when open */
+    }
+
+    #sidebar .close-btn {
+      position: absolute;
+      top: 30px;
+      left: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+    #sidebar h2 {
+      margin-left: 40px;
+      margin-bottom: 20px;
+    }
+
+    #sidebar input {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    #sidebar button {
+      background-color: #e74c3c;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .corner-shape.left,
+    .corner-shape.right {
+      position: fixed;
+      bottom: 0;
+      width: 80px;
+      height: 80px;
+      z-index: 0;
+    }
+
+    .corner-shape.left {
+      left: 0;
+      background-color: #ff4b4b;
+      border-top-right-radius: 40px;
+    }
+
+    .corner-shape.right {
+      right: 0;
+      background-color: #0099ff;
+      border-top-left-radius: 40px;
+    }
+
+    .vertical-line {
+      position: absolute;
+      top: 60px;
+      bottom: 0;
+      width: 4px;
+      background-color: #777;
+      z-index: 1;
+    }
+
+    .vertical-line.left {
+      left: 20px;
+    }
+
+    .vertical-line.right {
+      right: 20px;
+    }
+
+    #seccionOpciones {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    .boton-opcion {
+      width: 200px;
+      padding: 12px;
+      margin: 10px auto;
+      background-color: #D9D9D9;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+    }
+
+    .boton-atras {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 40px;
+      height: 40px;
+      background-color: #ff4b4b;
+      color: white;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 3;
+    }
+
+    #seccionEstudiantes,
+    #seccionProfesores {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px 40px 40px 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      text-align: center;
+    }
+
+    #botonAgregarItem {
+      background-color: #0099ff;
+      border: none;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin-bottom: 20px;
+      line-height: 50px;
+      user-select: none;
+    }
+
+    #listaItems,
+    #listaProfesores {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 650px;
+      text-align: left;
+    }
+
+    #listaItems li,
+    #listaProfesores li {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    #listaItems li input[type="text"] {
+      width: 110px;
+      padding: 6px 8px;
+      margin: 0 6px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    #listaItems li button {
+      border: none;
+      font-size: 18px;
+      margin-left: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 35px;
+      height: 35px;
+      line-height: 30px;
+      color: white;
+    }
+
+    .enviar { background-color: #28a745; }
+    .editar { background-color: #007bff; }
+    .eliminar { background-color: #ff4b4b; }
   </style>
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <div class="top-bar"><button id="botonAcceder">Acceder</button></div>
-  <div class="vertical-line left"></div><div class="vertical-line right"></div>
+  <div class="top-bar">
+    <button id="botonAcceder">Acceder</button>
+  </div>
 
-  <!-- SIDEBAR LOGIN -->
+  <div class="vertical-line left"></div>
+  <div class="vertical-line right"></div>
+
   <div id="sidebar">
     <span class="close-btn" id="cerrarSidebar">&times;</span>
     <h2>Ingrese Contraseña</h2>
@@ -55,143 +265,259 @@
     <button id="submitPassword">Enviar</button>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="layout">
     <div class="main">
-      <div class="corner-shape left"></div><div class="corner-shape right"></div>
+      <div class="corner-shape left"></div>
+      <div class="corner-shape right"></div>
 
-      <!-- OPCIONES -->
       <div id="seccionOpciones">
-        <button class="boton-atras" id="volverLogin">&larr;</button>
+        <button class="boton-atras" id="volverLogin">&#8592;</button>
         <h2>Opciones</h2>
         <button class="boton-opcion" id="moduloProfesores">Módulo de Profesores</button>
         <button class="boton-opcion" id="moduloRecepcion">Módulo de Recepción</button>
         <button class="boton-opcion" id="moduloTV">Módulo de Televisión</button>
       </div>
 
-      <!-- RECEPCIÓN -->
       <div id="seccionEstudiantes">
-        <button class="boton-atras" id="volverOpciones">&larr;</button>
+        <button class="boton-atras" id="volverOpciones">&#8592;</button>
         <h1>Módulo de Recepción</h1>
         <button id="botonAgregarItem">+</button>
         <ul id="listaItems"></ul>
       </div>
 
-      <!-- PROFESORES -->
       <div id="seccionProfesores">
-        <button class="boton-atras" id="volverOpcionesDesdeProfesores">&larr;</button>
+        <button class="boton-atras" id="volverOpcionesDesdeProfesores">&#8592;</button>
         <h1>Módulo de Profesores</h1>
         <ul id="listaProfesores"></ul>
       </div>
     </div>
   </div>
 
-  <!-- SCRIPTS --------------------------------------------------------------- -->
   <script type="module">
-    /* ----------- Firebase inicialización ------------ */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
     const firebaseConfig = {
-      apiKey:"AIzaSyDbAUn8UFkKwnc84Zzv58RUdb41-jwntEk",
-      authDomain:"student-info-board.firebaseapp.com",
-      projectId:"student-info-board",
-      storageBucket:"student-info-board.appspot.com",
-      messagingSenderId:"909163093372",
-      appId:"1:909163093372:web:531000556cf9adf3f398f9",
-      databaseURL:"https://student-info-board-default-rtdb.firebaseio.com"
+      apiKey: "AIzaSyDbAUn8UFkKwnc84Zzv58RUdb41-jwntEk",
+      authDomain: "student-info-board.firebaseapp.com",
+      projectId: "student-info-board",
+      storageBucket: "student-info-board.appspot.com",
+      messagingSenderId: "909163093372",
+      appId: "1:909163093372:web:531000556cf9adf3f398f9",
+      databaseURL: "https://student-info-board-default-rtdb.firebaseio.com"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
-    const dbRef = ref(db,'items'); // almacena lista completa
+    const db = getDatabase(app);
 
-    /* ----------- REFERENCIAS DOM ------------ */
-    const botonAcceder=document.getElementById('botonAcceder');
-    const sidebar=document.getElementById('sidebar');
-    const cerrarSidebar=document.getElementById('cerrarSidebar');
-    const submitPassword=document.getElementById('submitPassword');
-    const inputPassword=document.getElementById('inputPassword');
+    const botonAcceder = document.getElementById('botonAcceder');
+    const sidebar = document.getElementById('sidebar');
+    const cerrarSidebar = document.getElementById('cerrarSidebar');
+    const submitPassword = document.getElementById('submitPassword');
+    const inputPassword = document.getElementById('inputPassword');
 
-    const secOpciones=document.getElementById('seccionOpciones');
-    const secEst=document.getElementById('seccionEstudiantes');
-    const secProf=document.getElementById('seccionProfesores');
-    const volverLogin=document.getElementById('volverLogin');
-    const volverOpc=document.getElementById('volverOpciones');
-    const volverOpcProf=document.getElementById('volverOpcionesDesdeProfesores');
-    const btnAdd=document.getElementById('botonAgregarItem');
-    const listaItems=document.getElementById('listaItems');
-    const listaProfe=document.getElementById('listaProfesores');
+    const seccionOpciones = document.getElementById('seccionOpciones');
+    const seccionEstudiantes = document.getElementById('seccionEstudiantes');
+    const seccionProfesores = document.getElementById('seccionProfesores');
 
-    let auth=false;
+    const volverLogin = document.getElementById('volverLogin');
+    const volverOpciones = document.getElementById('volverOpciones');
+    const volverOpcionesDesdeProfesores = document.getElementById('volverOpcionesDesdeProfesores');
 
-    /* ----------- FUNCIONES AUX  ------------ */
-    const show=e=>e.style.display='block';
-    const hide=e=>e.style.display='none';
+    const botonAgregarItem = document.getElementById('botonAgregarItem');
+    const listaItems = document.getElementById('listaItems');
+    const listaProfesores = document.getElementById('listaProfesores');
 
-    function serializarLista(){
-      return Array.from(listaItems.children).map(li=>{
-        const ins=li.querySelectorAll('input[type="text"]');
-        return {input1:ins[0].value,input2:ins[1].value,input3:ins[2].value,input4:ins[3].value,disabled:ins[0].disabled};
+    let estaAutenticado = false;
+
+    botonAcceder.addEventListener('click', () => {
+      if (estaAutenticado) {
+        seccionOpciones.style.display = 'block';
+        botonAcceder.style.display = 'none';
+      } else {
+        sidebar.classList.add('open');
+        inputPassword.value = '';
+        inputPassword.focus();
+      }
+    });
+
+    cerrarSidebar.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+    });
+
+    submitPassword.addEventListener('click', () => {
+      if(inputPassword.value === 'NorthHill22') {
+        estaAutenticado = true;
+        sidebar.classList.remove('open');
+        botonAcceder.style.display = 'none';
+        seccionOpciones.style.display = 'block';
+      } else {
+        alert('Contraseña incorrecta');
+        inputPassword.value = '';
+        inputPassword.focus();
+      }
+    });
+
+    volverLogin.addEventListener('click', () => {
+      seccionOpciones.style.display = 'none';
+      botonAcceder.style.display = 'block';
+    });
+
+    document.getElementById('moduloRecepcion').addEventListener('click', () => {
+      seccionOpciones.style.display = 'none';
+      seccionEstudiantes.style.display = 'block';
+      seccionProfesores.style.display = 'none';
+    });
+
+    document.getElementById('moduloProfesores').addEventListener('click', () => {
+      seccionOpciones.style.display = 'none';
+      seccionProfesores.style.display = 'block';
+      seccionEstudiantes.style.display = 'none';
+    });
+
+    document.getElementById('moduloTV').addEventListener('click', () => {
+      alert('Módulo de Televisión no implementado aún.');
+    });
+
+    volverOpciones.addEventListener('click', () => {
+      seccionEstudiantes.style.display = 'none';
+      seccionOpciones.style.display = 'block';
+    });
+
+    volverOpcionesDesdeProfesores.addEventListener('click', () => {
+      seccionProfesores.style.display = 'none';
+      seccionOpciones.style.display = 'block';
+    });
+
+    const recepcionRef = ref(db, 'recepcion');
+
+    botonAgregarItem.addEventListener('click', () => {
+      addItemFromData();
+    });
+
+    function clearRecepcionList() {
+      listaItems.innerHTML = '';
+      listaProfesores.innerHTML = '';
+    }
+
+    onValue(recepcionRef, (snapshot) => {
+      clearRecepcionList();
+      const data = snapshot.val();
+      if (!data) return;
+      Object.entries(data).forEach(([key, val]) => {
+        addItemFromData(val, key);
       });
-    }
+    });
 
-    function syncFirebase(){ set(dbRef, serializarLista()); }
+    function addItemFromData(data = null, key = null) {
+      const li = document.createElement('li');
 
-    /* ----------- SIDEBAR LOGIN ------------ */
-    botonAcceder.onclick=()=>sidebar.classList.add('open');
-    cerrarSidebar.onclick=()=>sidebar.classList.remove('open');
+      const input1 = document.createElement('input');
+      const spanDe1 = document.createElement('span');
+      const input2 = document.createElement('input');
+      const spanSeVaCon = document.createElement('span');
+      const input3 = document.createElement('input');
+      const spanDe2 = document.createElement('span');
+      const input4 = document.createElement('input');
 
-    submitPassword.onclick=()=>{
-      if(inputPassword.value==='NorthHill22'){
-        auth=true; sidebar.classList.remove('open'); hide(botonAcceder); show(secOpciones);
-        // Escucha cambios Firebase y renderiza
-        onValue(dbRef,snap=>renderItems(snap.val()||[]));
-      }else{alert('Contraseña incorrecta');inputPassword.value='';}
-    };
+      input1.type = input2.type = input3.type = input4.type = 'text';
+      spanDe1.textContent = ' de ';
+      spanSeVaCon.textContent = ' se va con ';
+      spanDe2.textContent = ' de ';
 
-    /* ----------- NAVEGACIÓN  ------------ */
-    volverLogin.onclick=()=>{hide(secOpciones);show(botonAcceder);}  
-    document.getElementById('moduloRecepcion').onclick=()=>{hide(secOpciones);show(secEst);}  
-    document.getElementById('moduloProfesores').onclick=()=>{hide(secOpciones);show(secProf);}  
-    volverOpc.onclick=()=>{hide(secEst);show(secOpciones);}  
-    volverOpcProf.onclick=()=>{hide(secProf);show(secOpciones);}  
+      if (data) {
+        input1.value = data.input1 || '';
+        input2.value = data.input2 || '';
+        input3.value = data.input3 || '';
+        input4.value = data.input4 || '';
+        [input1, input2, input3, input4].forEach(i => i.disabled = true);
+      }
 
-    /* ----------- CRUD RECEPCIÓN ------------ */
-    btnAdd.onclick=()=>addItem();
+      const botonEnviar = document.createElement('button');
+      botonEnviar.textContent = '✓';
+      botonEnviar.className = 'enviar';
 
-    function renderItems(arr){
-      listaItems.innerHTML=''; listaProfe.innerHTML='';
-      arr.forEach(it=>addItem(it));
-    }
+      const botonEditar = document.createElement('button');
+      botonEditar.textContent = '✎';
+      botonEditar.className = 'editar';
+      botonEditar.style.display = data ? 'inline-block' : 'none';
 
-    function addItem(data={}){
-      const li=document.createElement('li');
-      const i1=document.createElement('input'),i2=document.createElement('input'),i3=document.createElement('input'),i4=document.createElement('input');
-      [i1,i2,i3,i4].forEach(i=>i.type='text');
-      const s1=document.createElement('span');s1.textContent=' de ';
-      const s2=document.createElement('span');s2.textContent=' se va con ';
-      const s3=document.createElement('span');s3.textContent=' de ';
-      const bOk=document.createElement('button');bOk.textContent='✓';bOk.className='enviar';
-      const bEd=document.createElement('button');bEd.textContent='✎';bEd.className='editar';
-      const bDel=document.createElement('button');bDel.textContent='×';bDel.className='eliminar';
-      let profLi;
+      const botonEliminar = document.createElement('button');
+      botonEliminar.textContent = '×';
+      botonEliminar.className = 'eliminar';
 
-      if(data.input1){[data.input1,data.input2,data.input3,data.input4].forEach((v,idx)=>[i1,i2,i3,i4][idx].value=v);[i1,i2,i3,i4].forEach(i=>i.disabled=true);bOk.style.display='none';profLi=document.createElement('li');profLi.textContent=`${i1.value} de ${i2.value} se va con ${i3.value} de ${i4.value}`;listaProfe.appendChild(profLi);}else bEd.style.display='none';
+      let liProfesor = null;
 
-      bOk.onclick=()=>{
-        if([i1,i2,i3,i4].some(i=>!i.value.trim()))return alert('Completa todos los campos');
-        [i1,i2,i3,i4].forEach(i=>i.disabled=true);bOk.style.display='none';bEd.style.display='inline-block';
-        profLi||=(profLi=document.createElement('li'),listaProfe.appendChild(profLi));
-        profLi.textContent=`${i1.value} de ${i2.value} se va con ${i3.value} de ${i4.value}`;
-        syncFirebase();
-      };
-      bEd.onclick=()=>{[i1,i2,i3,i4].forEach(i=>i.disabled=false);bEd.style.display='none';bOk.style.display='inline-block';profLi?.remove();profLi=null;syncFirebase();};
-      bDel.onclick=()=>{li.remove();profLi?.remove();syncFirebase();};
+      botonEnviar.addEventListener('click', () => {
+        if (
+          input1.value.trim() === '' ||
+          input2.value.trim() === '' ||
+          input3.value.trim() === '' ||
+          input4.value.trim() === ''
+        ) {
+          alert('Por favor, rellene todos los campos antes de enviar.');
+          return;
+        }
+        [input1, input2, input3, input4].forEach(i => i.disabled = true);
+        botonEnviar.style.display = 'none';
+        botonEditar.style.display = 'inline-block';
 
-      li.append(bOk,bEd,i1,s1,i2,s2,i3,s3,i4,bDel);
+        const nuevoDato = {
+          input1: input1.value,
+          input2: input2.value,
+          input3: input3.value,
+          input4: input4.value
+        };
+        if (key) {
+          pushToFirebaseUpdate(key, nuevoDato);
+        } else {
+          pushToFirebaseAdd(nuevoDato);
+        }
+
+        const texto = `${input1.value} de ${input2.value} se va con ${input3.value} de ${input4.value}`;
+        if (!liProfesor) {
+          liProfesor = document.createElement('li');
+          listaProfesores.appendChild(liProfesor);
+        }
+        liProfesor.textContent = texto;
+      });
+
+      botonEditar.addEventListener('click', () => {
+        [input1, input2, input3, input4].forEach(i => i.disabled = false);
+        botonEnviar.style.display = 'inline-block';
+        botonEditar.style.display = 'none';
+      });
+
+      botonEliminar.addEventListener('click', () => {
+        if (!key) {
+          li.remove();
+          if (liProfesor) liProfesor.remove();
+          return;
+        }
+        remove(ref(db, `recepcion/${key}`));
+      });
+
+      li.appendChild(input1);
+      li.appendChild(spanDe1);
+      li.appendChild(input2);
+      li.appendChild(spanSeVaCon);
+      li.appendChild(input3);
+      li.appendChild(spanDe2);
+      li.appendChild(input4);
+      li.appendChild(botonEnviar);
+      li.appendChild(botonEditar);
+      li.appendChild(botonEliminar);
+
       listaItems.appendChild(li);
-      if(!data.input1)i1.focus();
+    }
+
+    function pushToFirebaseAdd(data) {
+      push(recepcionRef, data);
+    }
+
+    function pushToFirebaseUpdate(key, data) {
+      const itemRef = ref(db, `recepcion/${key}`);
+      set(itemRef, data);
     }
   </script>
 </body>
