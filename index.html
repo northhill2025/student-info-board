@@ -41,17 +41,17 @@
 
     .layout .main {
       display: flex;
-      justify-content: center; /* Centrado horizontal */
-      align-items: flex-start; /* Para que quede más arriba */
+      justify-content: center;
+      align-items: flex-start;
       width: 100%;
       height: 100%;
-      padding-top: 100px; /* Ajusta según quieras subir/bajar */
+      padding-top: 100px;
     }
 
     #sidebar {
       position: fixed;
       top: 0;
-      right: -320px; /* Hidden by default */
+      right: -320px;
       width: 280px;
       height: 100%;
       background-color: #2c3e50;
@@ -65,7 +65,7 @@
     }
 
     #sidebar.open {
-      right: 0; /* Visible when open */
+      right: 0;
     }
 
     #sidebar .close-btn {
@@ -178,7 +178,8 @@
     }
 
     #seccionEstudiantes,
-    #seccionProfesores {
+    #seccionProfesores,
+    #seccionTV {
       display: none;
       max-width: 700px;
       margin: 0 auto;
@@ -188,6 +189,11 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
       text-align: center;
+    }
+
+    /* Diseño para el módulo Recepción (tomado de tu código) */
+    #seccionEstudiantes h1 {
+      margin-bottom: 20px;
     }
 
     #botonAgregarItem {
@@ -205,8 +211,7 @@
       user-select: none;
     }
 
-    #listaItems,
-    #listaProfesores {
+    #listaItems {
       list-style: none;
       padding: 0;
       margin: 0 auto;
@@ -214,39 +219,160 @@
       text-align: left;
     }
 
-    #listaItems li,
-    #listaProfesores li {
-      margin: 10px 0;
+    #listaItems li {
       display: flex;
       align-items: center;
+      margin: 10px 0;
       font-size: 16px;
+      flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
     }
 
     #listaItems li input[type="text"] {
       width: 110px;
       padding: 6px 8px;
-      margin: 0 6px;
+      margin: 0 6px 5px 0; /* Ajuste el margen inferior para el flex-wrap */
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
     }
+    #listaItems li span {
+        margin-right: 5px;
+        white-space: nowrap; /* Evita que el texto se rompa */
+    }
+
 
     #listaItems li button {
       border: none;
       font-size: 18px;
-      margin-left: 12px;
+      margin-left: 5px; /* Ajustado para mejor espaciado */
       border-radius: 5px;
       cursor: pointer;
       width: 35px;
       height: 35px;
       line-height: 30px;
       color: white;
+      display: inline-block; /* Asegura que los botones se muestren correctamente */
     }
 
     .enviar { background-color: #28a745; }
     .editar { background-color: #007bff; }
     .eliminar { background-color: #ff4b4b; }
+
+    /* Ajustes módulo TV: columnas y títulos alineados */
+    #seccionTV.fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      margin: 0 !important;
+      padding: 60px 40px 40px 40px !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: white !important;
+      z-index: 9999 !important;
+      overflow-y: auto !important;
+      text-align: center !important;
+
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 40px;
+    }
+
+    #seccionTV.fullscreen::before {
+      content: "";
+      position: absolute;
+      top: 60px;
+      bottom: 40px;
+      left: 50%;
+      width: 3px;
+      background-color: #777;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    #tv-left, #tv-right {
+      flex: 1;
+      position: relative;
+      text-align: left;
+      overflow-y: auto;
+    }
+
+    #tv-left {
+      padding-top: 0px; /* Ya no es necesario el padding extra aquí */
+    }
+
+    #tv-right {
+      padding-top: 0px; /* Alinea título con el izquierdo */
+    }
+
+    /* Alineación horizontal títulos en TV */
+    #tv-left h1,
+    #tv-right h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      margin-top: 0;
+    }
+
+    #listaTV li {
+      margin: 10px 0;
+      font-size: 24px;
+    }
+
+    #listaProfesores li {
+      margin: 10px 0;
+      font-size: 18px; /* Tamaño de fuente para profesores */
+      text-align: left;
+    }
+
+
+    #listaCumpleanos {
+      list-style: none;
+      padding: 0 10px;
+      font-size: 20px;
+      color: #333;
+      max-width: 100%;
+    }
+
+    #listaCumpleanos li {
+      margin: 15px 0;
+      padding: 10px;
+      border-left: 4px solid #ff6f61;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .cumpleanos-nombre {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .cumpleanos-grado {
+      color: #666;
+      font-style: italic;
+    }
+
+    .cumpleanos-edad { /* Nueva clase para la edad */
+      color: #0099ff;
+      font-weight: bold;
+    }
+
+    .mensaje-felicitacion { /* Estilo para el mensaje de felicitación */
+      font-size: 22px; /* Un poco más grande para que destaque */
+      font-weight: bold;
+      color: #e74c3c; /* Color llamativo (rojo) */
+      margin-top: 10px; /* Espacio arriba */
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Ligera sombra para pop-out */
+    }
+
+    #seccionTV .boton-atras {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 20;
+    }
   </style>
 </head>
 <body>
@@ -290,13 +416,27 @@
         <h1>Módulo de Profesores</h1>
         <ul id="listaProfesores"></ul>
       </div>
+
+      <div id="seccionTV">
+        <button class="boton-atras" id="volverOpcionesDesdeTV">&#8592;</button>
+        <div id="tv-left">
+          <h1>Salidas</h1>
+          <ul id="listaTV"></ul>
+        </div>
+        <div id="tv-right">
+          <h1>Cumpleaños</h1>
+          <ul id="listaCumpleanos"></ul>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, set, get, update } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
+    // **IMPORTANTE**: Verifica que esta API Key sea correcta para tu proyecto
     const firebaseConfig = {
       apiKey: "AIzaSyDbAUn8UFkKwnc84Zzv58RUdb41-jwntEk",
       authDomain: "student-info-board.firebaseapp.com",
@@ -309,6 +449,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    console.log("Firebase app initialized.");
 
     const botonAcceder = document.getElementById('botonAcceder');
     const sidebar = document.getElementById('sidebar');
@@ -319,26 +460,129 @@
     const seccionOpciones = document.getElementById('seccionOpciones');
     const seccionEstudiantes = document.getElementById('seccionEstudiantes');
     const seccionProfesores = document.getElementById('seccionProfesores');
+    const seccionTV = document.getElementById('seccionTV');
 
     const volverLogin = document.getElementById('volverLogin');
     const volverOpciones = document.getElementById('volverOpciones');
     const volverOpcionesDesdeProfesores = document.getElementById('volverOpcionesDesdeProfesores');
+    const volverOpcionesDesdeTV = document.getElementById('volverOpcionesDesdeTV');
 
     const botonAgregarItem = document.getElementById('botonAgregarItem');
     const listaItems = document.getElementById('listaItems');
     const listaProfesores = document.getElementById('listaProfesores');
+    const listaTV = document.getElementById('listaTV');
+    const listaCumpleanos = document.getElementById('listaCumpleanos');
+
+    const recepcionRef = ref(db, 'recepcion');
+    const cumpleanosRef = ref(db, 'cumpleanos');
 
     let estaAutenticado = false;
 
-    botonAcceder.addEventListener('click', () => {
-      if (estaAutenticado) {
-        seccionOpciones.style.display = 'block';
-        botonAcceder.style.display = 'none';
-      } else {
-        sidebar.classList.add('open');
-        inputPassword.value = '';
-        inputPassword.focus();
+    // Función para inicializar datos de cumpleaños (con fechas exactas para pruebas)
+    async function inicializarDatosCumpleanos() {
+      console.log("Forzando la reinicialización de datos de cumpleaños con fechas exactas...");
+      try {
+        const estudiantesPrueba = [
+          { nombre: "María González", grado: "5° Primaria", fecha: "05/08/2010" },
+          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: "06/08/2007" },
+          { nombre: "Ana López", grado: "1° Primaria", fecha: "07/08/2008" },
+          { nombre: "Diego Martín", grado: "4° Primaria", fecha: "08/08/2012" },
+          { nombre: "Sofía Herrera", grado: "2° Secundaria", fecha: "09/08/2013" }
+        ];
+
+        // Borra *todos* los cumpleaños existentes antes de crear nuevos
+        await set(cumpleanosRef, null);
+        console.log("Antiguos datos de cumpleaños borrados de Firebase.");
+
+        // Crea los datos uno por uno
+        for (const estudiante of estudiantesPrueba) {
+          await push(cumpleanosRef, estudiante);
+        }
+        console.log("Datos de cumpleaños restablecidos con las fechas especificadas en Firebase.");
+      } catch (error) {
+        console.error("Error al inicializar datos de cumpleaños:", error);
       }
+    }
+
+    // Llama a la función de inicialización de cumpleaños justo al cargar el script.
+    inicializarDatosCumpleanos();
+
+    // Escuchar cambios en cumpleaños
+    onValue(cumpleanosRef, (snapshot) => {
+      console.log("Evento onValue para cumpleaños disparado (después de inicialización forzada).");
+      const data = snapshot.val();
+      if (!data) {
+        console.log("No hay datos de cumpleaños disponibles después de la inicialización (esto podría ser un problema).");
+        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+        return;
+      }
+      cargarCumpleanos(data);
+    }, (error) => {
+      console.error("Error al leer datos de cumpleaños de Firebase:", error);
+      alert("Error al cargar cumpleaños: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
+    });
+
+
+    // Función para cargar y mostrar cumpleaños
+    function cargarCumpleanos(data) {
+      listaCumpleanos.innerHTML = '';
+      if (!data) {
+        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+        return;
+      }
+
+      const today = new Date();
+      const currentYear = today.getFullYear(); // Obtiene el año actual (ej. 2025)
+      const currentDay = today.getDate();
+      const currentMonth = today.getMonth() + 1; // getMonth() es 0-indexado (0 para enero, 11 para diciembre)
+
+      const cumpleanosDeHoy = Object.entries(data).filter(([key, val]) => {
+        const [day, month, year] = val.fecha.split('/'); // Obtiene día, mes y año de nacimiento
+        return parseInt(day) === currentDay && parseInt(month) === currentMonth;
+      }).map(([key, val]) => ({
+        key,
+        ...val
+      }));
+
+      // Si no hay cumpleaños para hoy, mostrar un mensaje
+      if (cumpleanosDeHoy.length === 0) {
+        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+        console.log("No hay cumpleaños para hoy.");
+        return;
+      }
+
+      // Ordenar por nombre si hay varios cumpleaños hoy
+      cumpleanosDeHoy.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+      cumpleanosDeHoy.forEach(cumple => {
+        const [day, month, birthYear] = cumple.fecha.split('/');
+        // Calcula la edad
+        let age = currentYear - parseInt(birthYear);
+        
+        // Ajusta la edad si el cumpleaños aún no ha pasado este año
+        const birthMonthNum = parseInt(month);
+        const birthDayNum = parseInt(day);
+
+        if (currentMonth < birthMonthNum || (currentMonth === birthMonthNum && currentDay < birthDayNum)) {
+            age--; // Si el mes actual es anterior al de nacimiento, o si es el mismo mes pero el día actual es anterior, resta un año.
+        }
+
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="cumpleanos-nombre">${cumple.nombre}</div>
+          <div class="cumpleanos-grado">${cumple.grado}</div>
+          <div class="cumpleanos-edad">Cumple ${age} años</div>
+          <div class="mensaje-felicitacion">¡Felicidades! 🎉</div> `;
+        listaCumpleanos.appendChild(li);
+      });
+      console.log(`Cumpleaños de hoy (${currentDay}/${currentMonth}) renderizados en la UI con la edad calculada y mensaje de felicitación.`);
+    }
+
+    // Event listeners para la interfaz de usuario (el resto del código permanece igual)
+    botonAcceder.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      inputPassword.value = '';
+      inputPassword.focus();
     });
 
     cerrarSidebar.addEventListener('click', () => {
@@ -346,6 +590,16 @@
     });
 
     submitPassword.addEventListener('click', () => {
+      verificarPassword();
+    });
+
+    inputPassword.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        verificarPassword();
+      }
+    });
+
+    function verificarPassword() {
       if(inputPassword.value === 'NorthHill22') {
         estaAutenticado = true;
         sidebar.classList.remove('open');
@@ -356,27 +610,47 @@
         inputPassword.value = '';
         inputPassword.focus();
       }
-    });
+    }
 
     volverLogin.addEventListener('click', () => {
       seccionOpciones.style.display = 'none';
       botonAcceder.style.display = 'block';
+      estaAutenticado = false;
     });
 
     document.getElementById('moduloRecepcion').addEventListener('click', () => {
       seccionOpciones.style.display = 'none';
       seccionEstudiantes.style.display = 'block';
       seccionProfesores.style.display = 'none';
+      seccionTV.style.display = 'none';
     });
 
     document.getElementById('moduloProfesores').addEventListener('click', () => {
       seccionOpciones.style.display = 'none';
       seccionProfesores.style.display = 'block';
       seccionEstudiantes.style.display = 'none';
+      seccionTV.style.display = 'none';
     });
 
-    document.getElementById('moduloTV').addEventListener('click', () => {
-      alert('Módulo de Televisión no implementado aún.');
+    document.getElementById('moduloTV').addEventListener('click', async () => {
+      seccionOpciones.style.display = 'none';
+      seccionTV.style.display = 'block';
+      seccionEstudiantes.style.display = 'none';
+      seccionProfesores.style.display = 'none';
+
+      try {
+        if (seccionTV.requestFullscreen) {
+          await seccionTV.requestFullscreen();
+        } else if (seccionTV.webkitRequestFullscreen) {
+          await seccionTV.webkitRequestFullscreen();
+        } else if (seccionTV.msRequestFullscreen) {
+          await seccionTV.msRequestFullscreen();
+        }
+      } catch (e) {
+        console.warn("No se pudo activar fullscreen:", e);
+      }
+
+      seccionTV.classList.add('fullscreen');
     });
 
     volverOpciones.addEventListener('click', () => {
@@ -389,28 +663,53 @@
       seccionOpciones.style.display = 'block';
     });
 
-    const recepcionRef = ref(db, 'recepcion');
+    volverOpcionesDesdeTV.addEventListener('click', async () => {
+      seccionTV.style.display = 'none';
+      seccionOpciones.style.display = 'block';
 
-    botonAgregarItem.addEventListener('click', () => {
-      addItemFromData();
+      if (document.fullscreenElement) {
+        try {
+          await document.exitFullscreen();
+        } catch (e) {
+          console.warn("No se pudo salir de fullscreen:", e);
+        }
+      }
+      seccionTV.classList.remove('fullscreen');
     });
 
-    function clearRecepcionList() {
+    botonAgregarItem.addEventListener('click', () => {
+      addItemToReceptionList();
+    });
+
+    function clearAllLists() {
       listaItems.innerHTML = '';
       listaProfesores.innerHTML = '';
+      listaTV.innerHTML = '';
     }
 
     onValue(recepcionRef, (snapshot) => {
-      clearRecepcionList();
+      console.log("Evento onValue para recepción disparado.");
+      clearAllLists();
       const data = snapshot.val();
-      if (!data) return;
+      if (!data) {
+        console.log("No hay datos en recepción.");
+        return;
+      }
+
       Object.entries(data).forEach(([key, val]) => {
-        addItemFromData(val, key);
+        addItemToReceptionList(val, key);
+        addItemToTeachersList(val, key);
+        addItemToTVList(val, key);
       });
+      console.log("Elementos de recepción renderizados en la UI.");
+    }, (error) => {
+        console.error("Error al leer datos de recepción de Firebase:", error);
+        alert("Error al cargar salidas: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
     });
 
-    function addItemFromData(data = null, key = null) {
+    function addItemToReceptionList(data = null, key = null) {
       const li = document.createElement('li');
+      li.setAttribute('data-key', key);
 
       const input1 = document.createElement('input');
       const spanDe1 = document.createElement('span');
@@ -436,6 +735,7 @@
       const botonEnviar = document.createElement('button');
       botonEnviar.textContent = '✓';
       botonEnviar.className = 'enviar';
+      botonEnviar.style.display = data ? 'none' : 'inline-block';
 
       const botonEditar = document.createElement('button');
       botonEditar.textContent = '✎';
@@ -445,8 +745,6 @@
       const botonEliminar = document.createElement('button');
       botonEliminar.textContent = '×';
       botonEliminar.className = 'eliminar';
-
-      let liProfesor = null;
 
       botonEnviar.addEventListener('click', () => {
         if (
@@ -468,18 +766,15 @@
           input3: input3.value,
           input4: input4.value
         };
-        if (key) {
-          pushToFirebaseUpdate(key, nuevoDato);
-        } else {
-          pushToFirebaseAdd(nuevoDato);
-        }
 
-        const texto = `${input1.value} de ${input2.value} se va con ${input3.value} de ${input4.value}`;
-        if (!liProfesor) {
-          liProfesor = document.createElement('li');
-          listaProfesores.appendChild(liProfesor);
+        if (key) {
+          update(ref(db, `recepcion/${key}`), nuevoDato);
+          console.log(`Actualizado item de recepción con key: ${key}`);
+        } else {
+          const newItemRef = push(recepcionRef, nuevoDato);
+          li.setAttribute('data-key', newItemRef.key);
+          console.log(`Añadido nuevo item a recepción con key: ${newItemRef.key}`);
         }
-        liProfesor.textContent = texto;
       });
 
       botonEditar.addEventListener('click', () => {
@@ -489,12 +784,14 @@
       });
 
       botonEliminar.addEventListener('click', () => {
-        if (!key) {
+        const itemKey = li.getAttribute('data-key');
+        if (itemKey) {
+          remove(ref(db, `recepcion/${itemKey}`));
+          console.log(`Eliminado item de recepción con key: ${itemKey}`);
+        } else {
           li.remove();
-          if (liProfesor) liProfesor.remove();
-          return;
+          console.log("Eliminado item nuevo no guardado.");
         }
-        remove(ref(db, `recepcion/${key}`));
       });
 
       li.appendChild(input1);
@@ -509,16 +806,30 @@
       li.appendChild(botonEliminar);
 
       listaItems.appendChild(li);
+
+      if (!data) {
+        input1.value = '';
+        input2.value = '';
+        input3.value = '';
+        input4.value = '';
+      }
     }
 
-    function pushToFirebaseAdd(data) {
-      push(recepcionRef, data);
+    function addItemToTeachersList(data, key) {
+      const li = document.createElement('li');
+      li.setAttribute('data-key', key);
+      li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3} de ${data.input4}`;
+      listaProfesores.appendChild(li);
     }
 
-    function pushToFirebaseUpdate(key, data) {
-      const itemRef = ref(db, `recepcion/${key}`);
-      set(itemRef, data);
+    function addItemToTVList(data, key) {
+      const li = document.createElement('li');
+      li.setAttribute('data-key', key);
+      li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3} de ${data.input4}`;
+      listaTV.appendChild(li);
     }
+
   </script>
+
 </body>
 </html>
