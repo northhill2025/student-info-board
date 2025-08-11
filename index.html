@@ -191,7 +191,6 @@
       text-align: center;
     }
 
-    /* Diseño para el módulo Recepción (tomado de tu código) */
     #seccionEstudiantes h1 {
       margin-bottom: 20px;
     }
@@ -224,42 +223,98 @@
       align-items: center;
       margin: 10px 0;
       font-size: 16px;
-      flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+      flex-wrap: wrap;
     }
 
     #listaItems li input[type="text"] {
       width: 110px;
       padding: 6px 8px;
-      margin: 0 6px 5px 0; /* Ajuste el margen inferior para el flex-wrap */
+      margin: 0 6px 5px 0;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
     }
+
     #listaItems li span {
         margin-right: 5px;
-        white-space: nowrap; /* Evita que el texto se rompa */
+        white-space: nowrap;
     }
 
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 10px;
+    }
+
+    .checkbox-label {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+
+    #listaItems li input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      transform: scale(1.2);
+    }
+
+    #listaItems li input[type="date"] {
+      width: 120px;
+      padding: 4px 6px;
+      margin: 2px 4px;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .dates-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 10px;
+      gap: 5px;
+    }
+
+    .date-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .date-label {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+
+    .dates-row {
+      display: flex;
+      gap: 8px;
+    }
 
     #listaItems li button {
       border: none;
       font-size: 18px;
-      margin-left: 5px; /* Ajustado para mejor espaciado */
+      margin-left: 5px;
       border-radius: 5px;
       cursor: pointer;
       width: 35px;
       height: 35px;
       line-height: 30px;
       color: white;
-      display: inline-block; /* Asegura que los botones se muestren correctamente */
+      display: inline-block;
     }
 
     .enviar { background-color: #28a745; }
     .editar { background-color: #007bff; }
     .eliminar { background-color: #ff4b4b; }
 
-    /* Ajustes módulo TV: columnas y títulos alineados */
     #seccionTV.fullscreen {
       position: fixed !important;
       top: 0 !important;
@@ -274,7 +329,6 @@
       z-index: 9999 !important;
       overflow-y: auto !important;
       text-align: center !important;
-
       display: flex !important;
       flex-direction: row !important;
       gap: 40px;
@@ -300,14 +354,13 @@
     }
 
     #tv-left {
-      padding-top: 0px; /* Ya no es necesario el padding extra aquí */
+      padding-top: 0px;
     }
 
     #tv-right {
-      padding-top: 0px; /* Alinea título con el izquierdo */
+      padding-top: 0px;
     }
 
-    /* Alineación horizontal títulos en TV */
     #tv-left h1,
     #tv-right h1 {
       font-size: 28px;
@@ -322,10 +375,9 @@
 
     #listaProfesores li {
       margin: 10px 0;
-      font-size: 18px; /* Tamaño de fuente para profesores */
+      font-size: 18px;
       text-align: left;
     }
-
 
     #listaCumpleanos {
       list-style: none;
@@ -353,18 +405,18 @@
       font-style: italic;
     }
 
-    .cumpleanos-edad { /* Nueva clase para la edad */
+    .cumpleanos-edad {
       color: #0099ff;
       font-weight: bold;
     }
 
-    .mensaje-felicitacion { /* Estilo para el mensaje de felicitación */
-      font-size: 22px; /* Un poco más grande para que destaque */
+    .mensaje-felicitacion {
+      font-size: 22px;
       font-weight: bold;
-      color: #e74c3c; /* Color llamativo (rojo) */
-      margin-top: 10px; /* Espacio arriba */
+      color: #e74c3c;
+      margin-top: 10px;
       text-align: center;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Ligera sombra para pop-out */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     #seccionTV .boton-atras {
@@ -436,7 +488,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove, set, get, update } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-    // **IMPORTANTE**: Verifica que esta API Key sea correcta para tu proyecto
     const firebaseConfig = {
       apiKey: "AIzaSyDbAUn8UFkKwnc84Zzv58RUdb41-jwntEk",
       authDomain: "student-info-board.firebaseapp.com",
@@ -478,33 +529,37 @@
 
     let estaAutenticado = false;
 
-    // Función para inicializar datos de cumpleaños (con fechas exactas para pruebas)
+    // Función para inicializar datos de cumpleaños (con fechas de hoy para prueba)
     async function inicializarDatosCumpleanos() {
-      console.log("Forzando la reinicialización de datos de cumpleaños con fechas exactas...");
+      console.log("Inicializando datos de cumpleaños...");
       try {
+        // Usar la fecha actual para asegurar que hay cumpleaños hoy
+        const today = new Date();
+        const currentDay = String(today.getDate()).padStart(2, '0');
+        const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+        
         const estudiantesPrueba = [
-          { nombre: "María González", grado: "5° Primaria", fecha: "05/08/2010" },
-          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: "06/08/2007" },
-          { nombre: "Ana López", grado: "1° Primaria", fecha: "07/08/2008" },
-          { nombre: "Diego Martín", grado: "4° Primaria", fecha: "08/08/2012" },
-          { nombre: "Sofía Herrera", grado: "2° Secundaria", fecha: "09/08/2013" }
+          { nombre: "María González", grado: "5° Primaria", fecha: `${currentDay}/${currentMonth}/2010` },
+          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: `${currentDay}/${currentMonth}/2007` },
+          { nombre: "Ana López", grado: "1° Primaria", fecha: `${currentDay}/${currentMonth}/2008` }
         ];
 
-        // Borra *todos* los cumpleaños existentes antes de crear nuevos
-        await set(cumpleanosRef, null);
-        console.log("Antiguos datos de cumpleaños borrados de Firebase.");
-
-        // Crea los datos uno por uno
-        for (const estudiante of estudiantesPrueba) {
-          await push(cumpleanosRef, estudiante);
+        // Verificar si ya existen datos
+        const snapshot = await get(cumpleanosRef);
+        if (!snapshot.exists()) {
+          // Solo inicializar si no hay datos
+          for (const estudiante of estudiantesPrueba) {
+            await push(cumpleanosRef, estudiante);
+          }
+          console.log("Datos de cumpleaños inicializados para hoy:", `${currentDay}/${currentMonth}`);
+        } else {
+          console.log("Datos de cumpleaños ya existen en Firebase.");
         }
-        console.log("Datos de cumpleaños restablecidos con las fechas especificadas en Firebase.");
       } catch (error) {
         console.error("Error al inicializar datos de cumpleaños:", error);
       }
     }
 
-    // Llama a la función de inicialización de cumpleaños justo al cargar el script.
     inicializarDatosCumpleanos();
 
     // Escuchar cambios en cumpleaños
@@ -522,49 +577,54 @@
       alert("Error al cargar cumpleaños: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
     });
 
-
     // Función para cargar y mostrar cumpleaños
     function cargarCumpleanos(data) {
+      console.log("Cargando cumpleaños con data:", data);
       listaCumpleanos.innerHTML = '';
+      
       if (!data) {
+        console.log("No hay datos de cumpleaños");
         listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
         return;
       }
 
       const today = new Date();
-      const currentYear = today.getFullYear(); // Obtiene el año actual (ej. 2025)
+      const currentYear = today.getFullYear();
       const currentDay = today.getDate();
-      const currentMonth = today.getMonth() + 1; // getMonth() es 0-indexado (0 para enero, 11 para diciembre)
+      const currentMonth = today.getMonth() + 1;
+
+      console.log(`Fecha actual: ${currentDay}/${currentMonth}/${currentYear}`);
 
       const cumpleanosDeHoy = Object.entries(data).filter(([key, val]) => {
-        const [day, month, year] = val.fecha.split('/'); // Obtiene día, mes y año de nacimiento
-        return parseInt(day) === currentDay && parseInt(month) === currentMonth;
+        console.log(`Verificando cumpleaños: ${val.nombre} - ${val.fecha}`);
+        const [day, month, year] = val.fecha.split('/'); // dd/mm/yyyy formato
+        const esCumpleanosHoy = parseInt(day) === currentDay && parseInt(month) === currentMonth;
+        console.log(`¿Es cumpleaños hoy? ${esCumpleanosHoy} (${day}/${month} vs ${currentDay}/${currentMonth})`);
+        return esCumpleanosHoy;
       }).map(([key, val]) => ({
         key,
         ...val
       }));
 
-      // Si no hay cumpleaños para hoy, mostrar un mensaje
+      console.log("Cumpleaños de hoy encontrados:", cumpleanosDeHoy);
+
       if (cumpleanosDeHoy.length === 0) {
         listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
         console.log("No hay cumpleaños para hoy.");
         return;
       }
 
-      // Ordenar por nombre si hay varios cumpleaños hoy
       cumpleanosDeHoy.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
       cumpleanosDeHoy.forEach(cumple => {
-        const [day, month, birthYear] = cumple.fecha.split('/');
-        // Calcula la edad
+        const [day, month, birthYear] = cumple.fecha.split('/'); // dd/mm/yyyy formato
         let age = currentYear - parseInt(birthYear);
         
-        // Ajusta la edad si el cumpleaños aún no ha pasado este año
         const birthMonthNum = parseInt(month);
         const birthDayNum = parseInt(day);
 
         if (currentMonth < birthMonthNum || (currentMonth === birthMonthNum && currentDay < birthDayNum)) {
-            age--; // Si el mes actual es anterior al de nacimiento, o si es el mismo mes pero el día actual es anterior, resta un año.
+            age--;
         }
 
         const li = document.createElement('li');
@@ -575,10 +635,10 @@
           <div class="mensaje-felicitacion">¡Felicidades! 🎉</div> `;
         listaCumpleanos.appendChild(li);
       });
-      console.log(`Cumpleaños de hoy (${currentDay}/${currentMonth}) renderizados en la UI con la edad calculada y mensaje de felicitación.`);
+      console.log(`${cumpleanosDeHoy.length} cumpleaños renderizados para hoy (${currentDay}/${currentMonth})`);
     }
 
-    // Event listeners para la interfaz de usuario (el resto del código permanece igual)
+    // Event listeners para la interfaz de usuario
     botonAcceder.addEventListener('click', () => {
       sidebar.classList.add('open');
       inputPassword.value = '';
@@ -707,29 +767,122 @@
         alert("Error al cargar salidas: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
     });
 
+    // FUNCIÓN MODIFICADA: Ahora con dos campos de fecha "Desde" y "Hasta"
     function addItemToReceptionList(data = null, key = null) {
       const li = document.createElement('li');
       li.setAttribute('data-key', key);
 
       const input1 = document.createElement('input');
-      const spanDe1 = document.createElement('span');
+      const spanDe = document.createElement('span');
       const input2 = document.createElement('input');
       const spanSeVaCon = document.createElement('span');
       const input3 = document.createElement('input');
-      const spanDe2 = document.createElement('span');
-      const input4 = document.createElement('input');
 
-      input1.type = input2.type = input3.type = input4.type = 'text';
-      spanDe1.textContent = ' de ';
+      input1.type = input2.type = input3.type = 'text';
+      spanDe.textContent = ' de ';
       spanSeVaCon.textContent = ' se va con ';
-      spanDe2.textContent = ' de ';
+
+      // Crear el checkbox con su etiqueta
+      const checkboxContainer = document.createElement('div');
+      checkboxContainer.className = 'checkbox-container';
+      
+      const checkboxLabel = document.createElement('div');
+      checkboxLabel.className = 'checkbox-label';
+      checkboxLabel.textContent = 'solo hoy';
+      
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true; // Siempre empezará marcado
+
+      checkboxContainer.appendChild(checkboxLabel);
+      checkboxContainer.appendChild(checkbox);
+
+      // Crear el contenedor de fechas
+      const datesContainer = document.createElement('div');
+      datesContainer.className = 'dates-container';
+      
+      const datesRow = document.createElement('div');
+      datesRow.className = 'dates-row';
+      
+      // Crear campo "Desde"
+      const dateFromGroup = document.createElement('div');
+      dateFromGroup.className = 'date-group';
+      
+      const dateFromLabel = document.createElement('div');
+      dateFromLabel.className = 'date-label';
+      dateFromLabel.textContent = 'Desde';
+      
+      const dateFromInput = document.createElement('input');
+      dateFromInput.type = 'date';
+      dateFromInput.style.display = 'none'; // Inicialmente oculto
+      
+      dateFromGroup.appendChild(dateFromLabel);
+      dateFromGroup.appendChild(dateFromInput);
+      
+      // Crear campo "Hasta"
+      const dateToGroup = document.createElement('div');
+      dateToGroup.className = 'date-group';
+      
+      const dateToLabel = document.createElement('div');
+      dateToLabel.className = 'date-label';
+      dateToLabel.textContent = 'Hasta';
+      
+      const dateToInput = document.createElement('input');
+      dateToInput.type = 'date';
+      dateToInput.style.display = 'none'; // Inicialmente oculto
+      
+      dateToGroup.appendChild(dateToLabel);
+      dateToGroup.appendChild(dateToInput);
+      
+      datesRow.appendChild(dateFromGroup);
+      datesRow.appendChild(dateToGroup);
+      datesContainer.appendChild(datesRow);
+
+      // Función para mostrar/ocultar los campos de fecha
+      function toggleDateInputs() {
+        if (checkbox.checked) {
+          dateFromInput.style.display = 'none';
+          dateToInput.style.display = 'none';
+        } else {
+          dateFromInput.style.display = 'block';
+          dateToInput.style.display = 'block';
+          // Establecer fecha por defecto (hoy) en formato yyyy-mm-dd
+          if (!dateFromInput.value) {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateFromInput.value = `${year}-${month}-${day}`;
+          }
+          if (!dateToInput.value) {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateToInput.value = `${year}-${month}-${day}`;
+          }
+        }
+      }
+
+      // Event listener para el checkbox
+      checkbox.addEventListener('change', toggleDateInputs);
 
       if (data) {
         input1.value = data.input1 || '';
         input2.value = data.input2 || '';
         input3.value = data.input3 || '';
-        input4.value = data.input4 || '';
-        [input1, input2, input3, input4].forEach(i => i.disabled = true);
+        checkbox.checked = data.checkbox !== undefined ? data.checkbox : true;
+        if (data.dateFromValue) {
+          dateFromInput.value = data.dateFromValue;
+        }
+        if (data.dateToValue) {
+          dateToInput.value = data.dateToValue;
+        }
+        toggleDateInputs(); // Aplicar la lógica de mostrar/ocultar fechas
+        [input1, input2, input3].forEach(i => i.disabled = true);
+        checkbox.disabled = true;
+        dateFromInput.disabled = true;
+        dateToInput.disabled = true;
       }
 
       const botonEnviar = document.createElement('button');
@@ -750,13 +903,15 @@
         if (
           input1.value.trim() === '' ||
           input2.value.trim() === '' ||
-          input3.value.trim() === '' ||
-          input4.value.trim() === ''
+          input3.value.trim() === ''
         ) {
           alert('Por favor, rellene todos los campos antes de enviar.');
           return;
         }
-        [input1, input2, input3, input4].forEach(i => i.disabled = true);
+        [input1, input2, input3].forEach(i => i.disabled = true);
+        checkbox.disabled = true;
+        dateFromInput.disabled = true;
+        dateToInput.disabled = true;
         botonEnviar.style.display = 'none';
         botonEditar.style.display = 'inline-block';
 
@@ -764,21 +919,32 @@
           input1: input1.value,
           input2: input2.value,
           input3: input3.value,
-          input4: input4.value
+          checkbox: checkbox.checked,
+          dateFromValue: dateFromInput.value || null,
+          dateToValue: dateToInput.value || null
         };
 
+        console.log("Datos a guardar:", nuevoDato);
+
         if (key) {
-          update(ref(db, `recepcion/${key}`), nuevoDato);
-          console.log(`Actualizado item de recepción con key: ${key}`);
+          update(ref(db, `recepcion/${key}`), nuevoDato)
+            .then(() => console.log(`Actualizado item de recepción con key: ${key}`))
+            .catch(error => console.error("Error al actualizar:", error));
         } else {
-          const newItemRef = push(recepcionRef, nuevoDato);
-          li.setAttribute('data-key', newItemRef.key);
-          console.log(`Añadido nuevo item a recepción con key: ${newItemRef.key}`);
+          push(recepcionRef, nuevoDato)
+            .then((newItemRef) => {
+              li.setAttribute('data-key', newItemRef.key);
+              console.log(`Añadido nuevo item a recepción con key: ${newItemRef.key}`);
+            })
+            .catch(error => console.error("Error al guardar:", error));
         }
       });
 
       botonEditar.addEventListener('click', () => {
-        [input1, input2, input3, input4].forEach(i => i.disabled = false);
+        [input1, input2, input3].forEach(i => i.disabled = false);
+        checkbox.disabled = false;
+        dateFromInput.disabled = false;
+        dateToInput.disabled = false;
         botonEnviar.style.display = 'inline-block';
         botonEditar.style.display = 'none';
       });
@@ -795,12 +961,12 @@
       });
 
       li.appendChild(input1);
-      li.appendChild(spanDe1);
+      li.appendChild(spanDe);
       li.appendChild(input2);
       li.appendChild(spanSeVaCon);
       li.appendChild(input3);
-      li.appendChild(spanDe2);
-      li.appendChild(input4);
+      li.appendChild(checkboxContainer); // Añadir contenedor del checkbox
+      li.appendChild(datesContainer); // Añadir contenedor de fechas
       li.appendChild(botonEnviar);
       li.appendChild(botonEditar);
       li.appendChild(botonEliminar);
@@ -811,22 +977,61 @@
         input1.value = '';
         input2.value = '';
         input3.value = '';
-        input4.value = '';
+        checkbox.checked = true; // Siempre empezará marcado para nuevos items
       }
     }
 
-    function addItemToTeachersList(data, key) {
-      const li = document.createElement('li');
-      li.setAttribute('data-key', key);
-      li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3} de ${data.input4}`;
-      listaProfesores.appendChild(li);
+    // Función para verificar si una entrada debe mostrarse hoy
+    function esSalidaDeHoy(data) {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      
+      // Si está marcado como "solo hoy", siempre se muestra
+      if (data.checkbox === true) {
+        return true;
+      }
+      
+      // Si no está marcado como "solo hoy", verificar el rango de fechas
+      if (data.dateFromValue && data.dateToValue) {
+        const fechaDesde = new Date(data.dateFromValue);
+        const fechaHasta = new Date(data.dateToValue);
+        const fechaHoy = new Date(todayStr);
+        
+        return fechaHoy >= fechaDesde && fechaHoy <= fechaHasta;
+      }
+      
+      // Si solo hay fecha "desde", verificar si hoy es mayor o igual
+      if (data.dateFromValue && !data.dateToValue) {
+        const fechaDesde = new Date(data.dateFromValue);
+        const fechaHoy = new Date(todayStr);
+        
+        return fechaHoy >= fechaDesde;
+      }
+      
+      // Si no hay fechas específicas y no está marcado "solo hoy", no mostrar
+      return false;
     }
 
+    // FUNCIÓN MODIFICADA: Filtra solo las salidas del día actual
+    function addItemToTeachersList(data, key) {
+      // Solo agregar si es una salida para hoy
+      if (esSalidaDeHoy(data)) {
+        const li = document.createElement('li');
+        li.setAttribute('data-key', key);
+        li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3}`;
+        listaProfesores.appendChild(li);
+      }
+    }
+
+    // FUNCIÓN MODIFICADA: Filtra solo las salidas del día actual
     function addItemToTVList(data, key) {
-      const li = document.createElement('li');
-      li.setAttribute('data-key', key);
-      li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3} de ${data.input4}`;
-      listaTV.appendChild(li);
+      // Solo agregar si es una salida para hoy
+      if (esSalidaDeHoy(data)) {
+        const li = document.createElement('li');
+        li.setAttribute('data-key', key);
+        li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3}`;
+        listaTV.appendChild(li);
+      }
     }
 
   </script>
