@@ -16,7 +16,8 @@
       height: 60px;
       border-bottom: 3px solid #888;
       position: relative;
-      z-index: 1;
+      z-index: 10;
+      width: 100%;
     }
 
     #botonAcceder {
@@ -31,6 +32,11 @@
       font-size: 17px;
       box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
       cursor: pointer;
+      z-index: 1000;
+    }
+
+    #botonAcceder:hover {
+      background-color: #e55a4f;
     }
 
     .layout {
@@ -45,21 +51,24 @@
       align-items: flex-start;
       width: 100%;
       height: 100%;
-      padding-top: 100px;
+      padding-top: 20px;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     #sidebar {
       position: fixed;
       top: 0;
-      right: -320px;
-      width: 280px;
+      right: -350px;
+      width: 350px;
       height: 100%;
-      background-color: #2c3e50;
-      padding: 20px;
-      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+      background-color: #f1f1f1;
+      border-left: 3px solid #888;
+      padding: 0;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
       transition: right 0.3s ease;
-      z-index: 2;
-      color: white;
+      z-index: 500;
+      color: #333;
       display: flex;
       flex-direction: column;
     }
@@ -70,34 +79,79 @@
 
     #sidebar .close-btn {
       position: absolute;
-      top: 30px;
+      top: 15px;
       left: 15px;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
-      color: white;
+      color: #ff6f61;
+      font-weight: bold;
+      z-index: 600;
     }
 
-    #sidebar h2 {
-      margin-left: 40px;
-      margin-bottom: 20px;
+    #sidebar .sidebar-header {
+      background-color: #ff6f61;
+      color: white;
+      padding: 20px 20px 15px 50px;
+      margin: 0;
+      font-size: 22px;
+      font-weight: bold;
+      border-bottom: 3px solid #888;
+    }
+
+    #sidebar .sidebar-content {
+      padding: 30px 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    #sidebar label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #333;
+      font-weight: bold;
     }
 
     #sidebar input {
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
       font-size: 16px;
-      border: none;
-      border-radius: 4px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
       margin-bottom: 20px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    #sidebar input:focus {
+      outline: none;
+      border-color: #ff6f61;
     }
 
     #sidebar button {
-      background-color: #e74c3c;
+      width: 100%;
+      background-color: #ff6f61;
       border: none;
-      padding: 12px;
-      font-size: 16px;
+      padding: 14px;
+      font-size: 18px;
       color: white;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    #sidebar button:hover {
+      background-color: #e55a4f;
+    }
+
+    .sidebar-section {
+      display: none;
+    }
+
+    .sidebar-section.active {
+      display: block;
     }
 
     .corner-shape.left,
@@ -138,9 +192,25 @@
       right: 20px;
     }
 
-    #seccionOpciones {
+    /* Contenedor principal de opciones - OCULTO POR DEFECTO */
+    .opciones-container {
       display: none;
-      max-width: 600px;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    .opciones-container.active {
+      display: flex;
+    }
+
+    .seccion-opciones {
+      width: 100%;
+      max-width: 400px;
       margin: 0 auto;
       background: white;
       padding: 20px;
@@ -150,16 +220,57 @@
       position: relative;
     }
 
+    /* Colores específicos para cada sección */
+    .seccion-opciones.kinder {
+      border-top: 4px solid #ff6b6b;
+    }
+
+    .seccion-opciones.elementary {
+      border-top: 4px solid #4ecdc4;
+    }
+
+    .seccion-opciones.smart {
+      border-top: 4px solid #45b7d1;
+    }
+
+    .seccion-opciones h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .seccion-opciones.kinder h2 {
+      color: #ff6b6b;
+    }
+
+    .seccion-opciones.elementary h2 {
+      color: #4ecdc4;
+    }
+
+    .seccion-opciones.smart h2 {
+      color: #45b7d1;
+    }
+
     .boton-opcion {
-      width: 200px;
+      width: 100%;
       padding: 12px;
-      margin: 10px auto;
+      margin: 8px 0;
       background-color: #D9D9D9;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
-      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    .boton-opcion:hover {
+      background-color: #c9c9c9;
+    }
+
+    .boton-opcion:disabled {
+      background-color: #ccc;
+      color: #888;
+      cursor: not-allowed;
     }
 
     .boton-atras {
@@ -177,96 +288,133 @@
       z-index: 3;
     }
 
-    #seccionEstudiantes,
-    #seccionProfesores,
-    #seccionTV {
+    /* TODOS LOS MÓDULOS OCULTOS POR DEFECTO */
+    .modulo-seccion {
       display: none;
-      max-width: 700px;
+      max-width: 100%;
       margin: 0 auto;
       background: white;
-      padding: 20px 40px 40px 40px;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
       text-align: center;
+      box-sizing: border-box;
     }
 
-    #seccionEstudiantes h1 {
-      margin-bottom: 20px;
+    .modulo-seccion.active {
+      display: block;
+    }
+
+    .modulo-seccion h1 {
+      margin-bottom: 30px;
+      font-size: 20px;
     }
 
     #botonAgregarItem {
       background-color: #0099ff;
       border: none;
       color: white;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       cursor: pointer;
-      margin-bottom: 20px;
-      line-height: 50px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       user-select: none;
     }
 
-    #listaItems {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      max-width: 650px;
-      text-align: left;
-    }
-
-    #listaItems li {
+    .input-labels {
       display: flex;
+      justify-content: flex-start;
       align-items: center;
-      margin: 10px 0;
-      font-size: 16px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #333;
+      font-weight: bold;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      visibility: hidden;
       flex-wrap: wrap;
     }
 
-    #listaItems li input[type="text"] {
-      width: 110px;
-      padding: 6px 8px;
-      margin: 0 6px 5px 0;
-      font-size: 16px;
+    .input-labels.visible {
+      visibility: visible;
+    }
+
+    .input-labels .label1,
+    .input-labels .label2,
+    .input-labels .label3 {
+      width: 80px;
+      margin-right: 10px;
+      text-align: center;
+      font-size: 10px;
+    }
+
+    .lista-items {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .lista-items li {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 14px;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .lista-items li input[type="text"] {
+      width: 80px;
+      padding: 4px 6px;
+      margin: 0 2px 5px 0;
+      font-size: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
       box-sizing: border-box;
     }
 
-    #listaItems li span {
-        margin-right: 5px;
+    .lista-items li span {
+        margin-right: 3px;
         white-space: nowrap;
+        font-size: 12px;
     }
 
     .checkbox-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0 10px;
+      margin: 0 5px;
     }
 
     .checkbox-label {
-      font-size: 10px;
+      font-size: 8px;
       color: #666;
       margin-bottom: 2px;
       white-space: nowrap;
     }
 
-    #listaItems li input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+    .lista-items li input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
       cursor: pointer;
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
 
-    #listaItems li input[type="date"] {
-      width: 120px;
-      padding: 4px 6px;
-      margin: 2px 4px;
-      font-size: 12px;
+    .lista-items li input[type="date"] {
+      width: 100px;
+      padding: 2px 4px;
+      margin: 2px 2px;
+      font-size: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
@@ -276,8 +424,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 0 10px;
-      gap: 5px;
+      margin: 0 5px;
+      gap: 3px;
     }
 
     .date-group {
@@ -287,7 +435,7 @@
     }
 
     .date-label {
-      font-size: 10px;
+      font-size: 8px;
       color: #666;
       margin-bottom: 2px;
       white-space: nowrap;
@@ -295,18 +443,18 @@
 
     .dates-row {
       display: flex;
-      gap: 8px;
+      gap: 5px;
     }
 
-    #listaItems li button {
+    .lista-items li button {
       border: none;
-      font-size: 18px;
-      margin-left: 5px;
+      font-size: 14px;
+      margin-left: 3px;
       border-radius: 5px;
       cursor: pointer;
-      width: 35px;
-      height: 35px;
-      line-height: 30px;
+      width: 30px;
+      height: 30px;
+      line-height: 26px;
       color: white;
       display: inline-block;
     }
@@ -315,14 +463,14 @@
     .editar { background-color: #007bff; }
     .eliminar { background-color: #ff4b4b; }
 
-    #seccionTV.fullscreen {
+    .modulo-tv.fullscreen {
       position: fixed !important;
       top: 0 !important;
       left: 0 !important;
       width: 100vw !important;
       height: 100vh !important;
       margin: 0 !important;
-      padding: 60px 40px 40px 40px !important;
+      padding: 60px 20px 20px 20px !important;
       border-radius: 0 !important;
       box-shadow: none !important;
       background: white !important;
@@ -330,20 +478,24 @@
       overflow-y: auto !important;
       text-align: center !important;
       display: flex !important;
-      flex-direction: row !important;
-      gap: 40px;
+      flex-direction: column !important;
+      gap: 20px;
     }
 
-    #seccionTV.fullscreen::before {
-      content: "";
-      position: absolute;
-      top: 60px;
-      bottom: 40px;
-      left: 50%;
-      width: 3px;
-      background-color: #777;
-      transform: translateX(-50%);
-      z-index: 10;
+    #tv-fecha {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .tv-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+      position: relative;
     }
 
     #tv-left, #tv-right {
@@ -353,43 +505,97 @@
       overflow-y: auto;
     }
 
-    #tv-left {
-      padding-top: 0px;
-    }
-
-    #tv-right {
-      padding-top: 0px;
-    }
-
     #tv-left h1,
     #tv-right h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+      font-size: 22px;
+      margin-bottom: 15px;
       margin-top: 0;
+      text-align: center;
     }
 
-    #listaTV li {
-      margin: 10px 0;
-      font-size: 24px;
-    }
-
-    #listaProfesores li {
-      margin: 10px 0;
+    .lista-tv li {
+      margin: 8px 0;
       font-size: 18px;
-      text-align: left;
+      cursor: pointer;
+      position: relative;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      user-select: none;
     }
 
-    #listaCumpleanos {
+    .lista-tv li:hover {
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+    }
+
+    .lista-tv li.completado {
+      background-color: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+      position: relative;
+    }
+
+    .lista-tv li.completado::before {
+      content: "✓";
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #28a745;
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+
+    .lista-tv li.completado::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      right: 20px;
+      height: 3px;
+      background-color: #28a745;
+      border-radius: 2px;
+      opacity: 0.9;
+      z-index: 2;
+      transform: translateY(-50%);
+    }
+
+    .lista-tv li.completado .texto-contenido {
+      position: relative;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    .lista-profesores li {
+      margin: 8px 0;
+      font-size: 16px;
+      text-align: left;
+      padding: 5px;
+    }
+
+    .lista-cumpleanos {
       list-style: none;
       padding: 0 10px;
-      font-size: 20px;
+      font-size: 16px;
       color: #333;
       max-width: 100%;
     }
 
-    #listaCumpleanos li {
-      margin: 15px 0;
-      padding: 10px;
+    .lista-cumpleanos li {
+      margin: 12px 0;
+      padding: 8px;
       border-left: 4px solid #ff6f61;
       background-color: #f9f9f9;
       border-radius: 5px;
@@ -411,25 +617,322 @@
     }
 
     .mensaje-felicitacion {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: bold;
       color: #e74c3c;
-      margin-top: 10px;
+      margin-top: 8px;
       text-align: center;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
-    #seccionTV .boton-atras {
+    .user-info {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 20;
+      top: 5px;
+      right: 90px;
+      color: #333;
+      font-size: 10px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 2px solid #dee2e6;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .user-info::before {
+      content: "👤";
+      font-size: 12px;
+    }
+
+    /* Animación para cuando se marca como completado */
+    @keyframes checkAnimation {
+      0% {
+        transform: translateY(-50%) scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: translateY(-50%) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .lista-tv li.completado::before {
+      animation: checkAnimation 0.5s ease-out;
+    }
+
+    /* Efecto de pulso cuando se hace hover en items completados */
+    .lista-tv li.completado:hover::before {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+      50% {
+        box-shadow: 0 4px 8px rgba(40,167,69,0.4);
+      }
+      100% {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+    }
+
+    /* Media queries para dispositivos más grandes */
+    @media (min-width: 768px) {
+      .layout .main {
+        padding: 50px 20px;
+      }
+
+      .opciones-container {
+        flex-direction: row;
+        justify-content: center;
+        gap: 40px;
+      }
+
+      .seccion-opciones {
+        width: 350px;
+      }
+
+      .seccion-opciones h2 {
+        font-size: 20px;
+      }
+
+      .boton-opcion {
+        font-size: 16px;
+      }
+
+      .modulo-seccion {
+        padding: 20px 40px 40px 40px;
+      }
+
+      .modulo-seccion h1 {
+        font-size: 24px;
+      }
+
+      #botonAgregarItem {
+        font-size: 28px;
+        width: 50px;
+        height: 50px;
+        margin-bottom: 30px;
+      }
+
+      .input-labels {
+        font-size: 14px;
+        max-width: 650px;
+      }
+
+      .input-labels .label1,
+      .input-labels .label2,
+      .input-labels .label3 {
+        width: 110px;
+        margin-right: 23px;
+        font-size: 14px;
+      }
+
+      .input-labels .label3 {
+        margin-right: 120px;
+      }
+
+      .lista-items {
+        max-width: 650px;
+      }
+
+      .lista-items li {
+        font-size: 16px;
+        margin: 10px 0;
+        gap: 6px;
+      }
+
+      .lista-items li input[type="text"] {
+        width: 110px;
+        padding: 6px 8px;
+        font-size: 16px;
+      }
+
+      .lista-items li span {
+        font-size: 16px;
+        margin-right: 5px;
+      }
+
+      .lista-items li input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        transform: scale(1.2);
+      }
+
+      .lista-items li input[type="date"] {
+        width: 120px;
+        padding: 4px 6px;
+        font-size: 12px;
+      }
+
+      .lista-items li button {
+        font-size: 18px;
+        width: 35px;
+        height: 35px;
+        margin-left: 5px;
+      }
+
+      .modulo-tv.fullscreen {
+        flex-direction: column !important;
+        padding: 60px 40px 40px 40px !important;
+      }
+
+      .tv-content-wrapper {
+        flex-direction: row !important;
+        gap: 40px !important;
+        position: relative;
+      }
+
+      .modulo-tv.fullscreen .tv-content-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 3px;
+        background-color: #777;
+        transform: translateX(-50%);
+        z-index: 10;
+      }
+
+      #tv-fecha {
+        font-size: 28px !important;
+        margin-bottom: 30px !important;
+      }
+
+      #tv-left h1, #tv-right h1 {
+        font-size: 28px;
+        text-align: left;
+      }
+
+      .lista-tv li {
+        font-size: 24px;
+        margin: 10px 0;
+      }
+
+      .lista-tv li.completado::before {
+        width: 24px;
+        height: 24px;
+        font-size: 16px;
+      }
+
+      .lista-tv li.completado::after {
+        height: 4px;
+      }
+
+      .lista-profesores li {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      .lista-cumpleanos {
+        font-size: 20px;
+      }
+
+      .lista-cumpleanos li {
+        margin: 15px 0;
+        padding: 10px;
+      }
+
+      .mensaje-felicitacion {
+        font-size: 22px;
+        margin-top: 10px;
+      }
+
+      .user-info {
+        font-size: 12px;
+        padding: 10px 16px;
+        right: 100px;
+        top: 8px;
+      }
+
+      .user-info::before {
+        font-size: 14px;
+      }
+
+      .checkbox-label,
+      .date-label {
+        font-size: 10px;
+      }
+
+      .dates-container {
+        margin: 0 10px;
+        gap: 5px;
+      }
+
+      .dates-row {
+        gap: 8px;
+      }
+
+      .checkbox-container {
+        margin: 0 10px;
+      }
+    }
+
+    /* Media queries para móviles pequeños */
+    @media (max-width: 480px) {
+      .top-bar {
+        height: 50px;
+      }
+
+      #botonAcceder {
+        top: 6px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .layout {
+        height: calc(100vh - 50px);
+      }
+
+      .layout .main {
+        padding: 10px;
+      }
+
+      .user-info {
+        top: 12px;
+        right: 70px;
+        font-size: 9px;
+      }
+
+      .lista-items li input[type="text"] {
+        width: 70px;
+        font-size: 11px;
+      }
+
+      .lista-items li span {
+        font-size: 11px;
+      }
+
+      .lista-items li button {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+      }
+
+      .input-labels .label1,
+      .input-labels .label2,
+      .input-labels .label3 {
+        width: 70px;
+        font-size: 9px;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
+    <div class="user-info" id="userInfo" style="display: none;"></div>
     <button id="botonAcceder">Acceder</button>
   </div>
 
@@ -438,9 +941,15 @@
 
   <div id="sidebar">
     <span class="close-btn" id="cerrarSidebar">&times;</span>
-    <h2>Ingrese Contraseña</h2>
-    <input type="password" id="inputPassword" placeholder="Contraseña" />
-    <button id="submitPassword">Enviar</button>
+    <div class="sidebar-header">Iniciar Sesión</div>
+    
+    <div class="sidebar-section active sidebar-content" id="seccionLogin">
+      <label for="inputUsuario">Usuario:</label>
+      <input type="text" id="inputUsuario" placeholder="Nombre de usuario" />
+      <label for="inputPasswordUser">Contraseña:</label>
+      <input type="password" id="inputPasswordUser" placeholder="Contraseña de usuario" />
+      <button id="submitLogin">Iniciar Sesión</button>
+    </div>
   </div>
 
   <div class="layout">
@@ -448,36 +957,66 @@
       <div class="corner-shape left"></div>
       <div class="corner-shape right"></div>
 
-      <div id="seccionOpciones">
+      <!-- Contenedor principal de opciones - OCULTO POR DEFECTO -->
+      <div class="opciones-container" id="opcionesContainer">
         <button class="boton-atras" id="volverLogin">&#8592;</button>
-        <h2>Opciones</h2>
-        <button class="boton-opcion" id="moduloProfesores">Módulo de Profesores</button>
-        <button class="boton-opcion" id="moduloRecepcion">Módulo de Recepción</button>
-        <button class="boton-opcion" id="moduloTV">Módulo de Televisión</button>
-      </div>
-
-      <div id="seccionEstudiantes">
-        <button class="boton-atras" id="volverOpciones">&#8592;</button>
-        <h1>Módulo de Recepción</h1>
-        <button id="botonAgregarItem">+</button>
-        <ul id="listaItems"></ul>
-      </div>
-
-      <div id="seccionProfesores">
-        <button class="boton-atras" id="volverOpcionesDesdeProfesores">&#8592;</button>
-        <h1>Módulo de Profesores</h1>
-        <ul id="listaProfesores"></ul>
-      </div>
-
-      <div id="seccionTV">
-        <button class="boton-atras" id="volverOpcionesDesdeTV">&#8592;</button>
-        <div id="tv-left">
-          <h1>Salidas</h1>
-          <ul id="listaTV"></ul>
+        
+        <!-- Sección Kinder -->
+        <div class="seccion-opciones kinder">
+          <h2>Kinder</h2>
+          <button class="boton-opcion" data-section="kinder" data-module="profesores">Módulo de Profesores</button>
+          <button class="boton-opcion" data-section="kinder" data-module="recepcion">Módulo de Recepción</button>
+          <button class="boton-opcion" data-section="kinder" data-module="tv">Módulo de Televisión</button>
         </div>
-        <div id="tv-right">
-          <h1>Cumpleaños</h1>
-          <ul id="listaCumpleanos"></ul>
+
+        <!-- Sección Elementary y MS -->
+        <div class="seccion-opciones elementary">
+          <h2>Elementary y MS</h2>
+          <button class="boton-opcion" data-section="elementary" data-module="profesores">Módulo de Profesores</button>
+          <button class="boton-opcion" data-section="elementary" data-module="recepcion">Módulo de Recepción</button>
+          <button class="boton-opcion" data-section="elementary" data-module="tv">Módulo de Televisión</button>
+        </div>
+
+        <!-- Sección Smart -->
+        <div class="seccion-opciones smart">
+          <h2>Smart</h2>
+          <button class="boton-opcion" data-section="smart" data-module="profesores">Módulo de Profesores</button>
+          <button class="boton-opcion" data-section="smart" data-module="recepcion">Módulo de Recepción</button>
+          <button class="boton-opcion" data-section="smart" data-module="tv">Módulo de Televisión</button>
+        </div>
+      </div>
+
+      <!-- Módulos dinámicos - TODOS OCULTOS POR DEFECTO -->
+      <div class="modulo-seccion modulo-recepcion" id="moduloRecepcion">
+        <button class="boton-atras" id="volverOpciones">&#8592;</button>
+        <h1 id="tituloRecepcion">Módulo de Recepción</h1>
+        <button id="botonAgregarItem">+</button>
+        <div class="input-labels" id="inputLabels">
+          <div class="label1">Nombre completo</div>
+          <div class="label2">Grado</div>
+          <div class="label3">Nombre de con quien se va</div>
+        </div>
+        <ul class="lista-items" id="listaItems"></ul>
+      </div>
+
+      <div class="modulo-seccion modulo-profesores" id="moduloProfesores">
+        <button class="boton-atras" id="volverOpcionesDesdeProfesores">&#8592;</button>
+        <h1 id="tituloProfesores">Módulo de Profesores</h1>
+        <ul class="lista-profesores" id="listaProfesores"></ul>
+      </div>
+
+      <div class="modulo-seccion modulo-tv" id="moduloTV">
+        <button class="boton-atras" id="volverOpcionesDesdeTV">&#8592;</button>
+        <div id="tv-fecha"></div>
+        <div class="tv-content-wrapper">
+          <div id="tv-left">
+            <h1>Salidas</h1>
+            <ul class="lista-tv" id="listaTV"></ul>
+          </div>
+          <div id="tv-right">
+            <h1>Cumpleaños</h1>
+            <ul class="lista-cumpleanos" id="listaCumpleanos"></ul>
+          </div>
         </div>
       </div>
 
@@ -500,233 +1039,228 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
-    console.log("Firebase app initialized.");
 
+    // Variables de estado
+    let estaAutenticado = false;
+    let usuarioActual = null;
+    let tipoUsuario = null;
+    let seccionActual = null;
+    let itemsData = {};
+    let estadosCompletados = {};
+
+    // Usuarios permitidos
+    const usuarios = {
+      'recepción_nhes': { password: 'NorthHill25', type: 'admin' },
+      'profesores_nhes': { password: 'NorthHill22', type: 'profesor' }
+    };
+
+    // Referencias dinámicas de Firebase
+    let recepcionRef, cumpleanosRef;
+
+    // Referencias del DOM
     const botonAcceder = document.getElementById('botonAcceder');
     const sidebar = document.getElementById('sidebar');
     const cerrarSidebar = document.getElementById('cerrarSidebar');
-    const submitPassword = document.getElementById('submitPassword');
-    const inputPassword = document.getElementById('inputPassword');
-
-    const seccionOpciones = document.getElementById('seccionOpciones');
-    const seccionEstudiantes = document.getElementById('seccionEstudiantes');
-    const seccionProfesores = document.getElementById('seccionProfesores');
-    const seccionTV = document.getElementById('seccionTV');
-
-    const volverLogin = document.getElementById('volverLogin');
-    const volverOpciones = document.getElementById('volverOpciones');
-    const volverOpcionesDesdeProfesores = document.getElementById('volverOpcionesDesdeProfesores');
-    const volverOpcionesDesdeTV = document.getElementById('volverOpcionesDesdeTV');
-
+    const userInfo = document.getElementById('userInfo');
+    const inputLabels = document.getElementById('inputLabels');
+    const submitLogin = document.getElementById('submitLogin');
+    const inputUsuario = document.getElementById('inputUsuario');
+    const inputPasswordUser = document.getElementById('inputPasswordUser');
+    const opcionesContainer = document.getElementById('opcionesContainer');
+    const moduloRecepcion = document.getElementById('moduloRecepcion');
+    const moduloProfesores = document.getElementById('moduloProfesores');
+    const moduloTV = document.getElementById('moduloTV');
     const botonAgregarItem = document.getElementById('botonAgregarItem');
     const listaItems = document.getElementById('listaItems');
     const listaProfesores = document.getElementById('listaProfesores');
     const listaTV = document.getElementById('listaTV');
     const listaCumpleanos = document.getElementById('listaCumpleanos');
+    const tvFecha = document.getElementById('tv-fecha');
+    const tituloRecepcion = document.getElementById('tituloRecepcion');
+    const tituloProfesores = document.getElementById('tituloProfesores');
 
-    const recepcionRef = ref(db, 'recepcion');
-    const cumpleanosRef = ref(db, 'cumpleanos');
+    // Función para ocultar todos los módulos
+    function ocultarTodosLosModulos() {
+      moduloRecepcion.classList.remove('active');
+      moduloProfesores.classList.remove('active');
+      moduloTV.classList.remove('active');
+      moduloTV.classList.remove('fullscreen');
+    }
 
-    let estaAutenticado = false;
+    // Función para mostrar solo las opciones
+    function mostrarOpciones() {
+      ocultarTodosLosModulos();
+      opcionesContainer.classList.add('active');
+    }
 
-    // Función para inicializar datos de cumpleaños (con fechas de hoy para prueba)
-    async function inicializarDatosCumpleanos() {
-      console.log("Inicializando datos de cumpleaños...");
-      try {
-        // Usar la fecha actual para asegurar que hay cumpleaños hoy
-        const today = new Date();
-        const currentDay = String(today.getDate()).padStart(2, '0');
-        const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-        
-        const estudiantesPrueba = [
-          { nombre: "María González", grado: "5° Primaria", fecha: `${currentDay}/${currentMonth}/2010` },
-          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: `${currentDay}/${currentMonth}/2007` },
-          { nombre: "Ana López", grado: "1° Primaria", fecha: `${currentDay}/${currentMonth}/2008` }
-        ];
+    // Función para obtener fecha actual formateada
+    function obtenerFechaActual() {
+      const hoy = new Date();
+      const opciones = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        timeZone: 'America/Mexico_City'
+      };
+      return hoy.toLocaleDateString('es-ES', opciones);
+    }
 
-        // Verificar si ya existen datos
-        const snapshot = await get(cumpleanosRef);
-        if (!snapshot.exists()) {
-          // Solo inicializar si no hay datos
-          for (const estudiante of estudiantesPrueba) {
-            await push(cumpleanosRef, estudiante);
-          }
-          console.log("Datos de cumpleaños inicializados para hoy:", `${currentDay}/${currentMonth}`);
-        } else {
-          console.log("Datos de cumpleaños ya existen en Firebase.");
-        }
-      } catch (error) {
-        console.error("Error al inicializar datos de cumpleaños:", error);
+    // Actualizar fecha en TV
+    function actualizarFechaTV() {
+      if (tvFecha) {
+        tvFecha.textContent = obtenerFechaActual();
       }
     }
 
-    inicializarDatosCumpleanos();
-
-    // Escuchar cambios en cumpleaños
-    onValue(cumpleanosRef, (snapshot) => {
-      console.log("Evento onValue para cumpleaños disparado (después de inicialización forzada).");
-      const data = snapshot.val();
-      if (!data) {
-        console.log("No hay datos de cumpleaños disponibles después de la inicialización (esto podría ser un problema).");
-        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
-        return;
-      }
-      cargarCumpleanos(data);
-    }, (error) => {
-      console.error("Error al leer datos de cumpleaños de Firebase:", error);
-      alert("Error al cargar cumpleaños: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
-    });
-
-    // Función para cargar y mostrar cumpleaños
-    function cargarCumpleanos(data) {
-      console.log("Cargando cumpleaños con data:", data);
-      listaCumpleanos.innerHTML = '';
+    // Actualizar títulos según sección
+    function actualizarTitulos() {
+      const sectionNames = {
+        'kinder': 'Kinder',
+        'elementary': 'Elementary y MS',
+        'smart': 'Smart'
+      };
       
-      if (!data) {
-        console.log("No hay datos de cumpleaños");
-        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
-        return;
+      if (tituloRecepcion) {
+        tituloRecepcion.textContent = `Módulo de Recepción - ${sectionNames[seccionActual]}`;
       }
-
-      const today = new Date();
-      const currentYear = today.getFullYear();
-      const currentDay = today.getDate();
-      const currentMonth = today.getMonth() + 1;
-
-      console.log(`Fecha actual: ${currentDay}/${currentMonth}/${currentYear}`);
-
-      const cumpleanosDeHoy = Object.entries(data).filter(([key, val]) => {
-        console.log(`Verificando cumpleaños: ${val.nombre} - ${val.fecha}`);
-        const [day, month, year] = val.fecha.split('/'); // dd/mm/yyyy formato
-        const esCumpleanosHoy = parseInt(day) === currentDay && parseInt(month) === currentMonth;
-        console.log(`¿Es cumpleaños hoy? ${esCumpleanosHoy} (${day}/${month} vs ${currentDay}/${currentMonth})`);
-        return esCumpleanosHoy;
-      }).map(([key, val]) => ({
-        key,
-        ...val
-      }));
-
-      console.log("Cumpleaños de hoy encontrados:", cumpleanosDeHoy);
-
-      if (cumpleanosDeHoy.length === 0) {
-        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
-        console.log("No hay cumpleaños para hoy.");
-        return;
+      if (tituloProfesores) {
+        tituloProfesores.textContent = `Módulo de Profesores - ${sectionNames[seccionActual]}`;
       }
-
-      cumpleanosDeHoy.sort((a, b) => a.nombre.localeCompare(b.nombre));
-
-      cumpleanosDeHoy.forEach(cumple => {
-        const [day, month, birthYear] = cumple.fecha.split('/'); // dd/mm/yyyy formato
-        let age = currentYear - parseInt(birthYear);
-        
-        const birthMonthNum = parseInt(month);
-        const birthDayNum = parseInt(day);
-
-        if (currentMonth < birthMonthNum || (currentMonth === birthMonthNum && currentDay < birthDayNum)) {
-            age--;
-        }
-
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div class="cumpleanos-nombre">${cumple.nombre}</div>
-          <div class="cumpleanos-grado">${cumple.grado}</div>
-          <div class="cumpleanos-edad">Cumple ${age} años</div>
-          <div class="mensaje-felicitacion">¡Felicidades! 🎉</div> `;
-        listaCumpleanos.appendChild(li);
-      });
-      console.log(`${cumpleanosDeHoy.length} cumpleaños renderizados para hoy (${currentDay}/${currentMonth})`);
     }
 
-    // Event listeners para la interfaz de usuario
-    botonAcceder.addEventListener('click', () => {
+    // Establecer referencias de Firebase según sección
+    function establecerReferencias(seccion) {
+      recepcionRef = ref(db, `recepcion_${seccion}`);
+      cumpleanosRef = ref(db, `cumpleanos_${seccion}`);
+    }
+
+    // Función para actualizar visibilidad de labels
+    function actualizarVisibilidadLabels() {
+      if (listaItems && listaItems.children.length > 0) {
+        inputLabels.classList.add('visible');
+      } else {
+        inputLabels.classList.remove('visible');
+      }
+    }
+
+    // Función para actualizar interfaz según usuario
+    function actualizarInterfazUsuario() {
+      const botonesRecepcion = document.querySelectorAll('[data-module="recepcion"]');
+      
+      botonesRecepcion.forEach(boton => {
+        if (tipoUsuario === 'admin') {
+          boton.disabled = false;
+          boton.style.display = 'block';
+        } else if (tipoUsuario === 'profesor') {
+          boton.disabled = true;
+          boton.style.display = 'none';
+        }
+      });
+      
+      userInfo.textContent = `Usuario: ${usuarioActual} (${tipoUsuario === 'admin' ? 'Administrador' : 'Profesor'})`;
+      userInfo.style.display = 'block';
+    }
+
+    // Event listeners
+    botonAcceder.addEventListener('click', (e) => {
+      e.preventDefault();
       sidebar.classList.add('open');
-      inputPassword.value = '';
-      inputPassword.focus();
+      inputUsuario.value = '';
+      inputPasswordUser.value = '';
+      setTimeout(() => inputUsuario.focus(), 300);
     });
 
-    cerrarSidebar.addEventListener('click', () => {
+    cerrarSidebar.addEventListener('click', (e) => {
+      e.preventDefault();
       sidebar.classList.remove('open');
     });
 
-    submitPassword.addEventListener('click', () => {
-      verificarPassword();
-    });
-
-    inputPassword.addEventListener('keypress', (e) => {
+    submitLogin.addEventListener('click', verificarUsuario);
+    
+    inputPasswordUser.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        verificarPassword();
+        verificarUsuario();
       }
     });
 
-    function verificarPassword() {
-      if(inputPassword.value === 'NorthHill22') {
+    function verificarUsuario() {
+      const usuario = inputUsuario.value.trim();
+      const password = inputPasswordUser.value.trim();
+
+      if (usuarios[usuario] && usuarios[usuario].password === password) {
         estaAutenticado = true;
+        usuarioActual = usuario;
+        tipoUsuario = usuarios[usuario].type;
+        
         sidebar.classList.remove('open');
         botonAcceder.style.display = 'none';
-        seccionOpciones.style.display = 'block';
+        mostrarOpciones();
+        
+        actualizarInterfazUsuario();
       } else {
-        alert('Contraseña incorrecta');
-        inputPassword.value = '';
-        inputPassword.focus();
+        alert('Usuario o contraseña incorrectos');
+        inputUsuario.value = '';
+        inputPasswordUser.value = '';
+        inputUsuario.focus();
       }
     }
 
-    volverLogin.addEventListener('click', () => {
-      seccionOpciones.style.display = 'none';
+    // Navegación
+    document.getElementById('volverLogin').addEventListener('click', () => {
+      opcionesContainer.classList.remove('active');
+      ocultarTodosLosModulos();
       botonAcceder.style.display = 'block';
+      userInfo.style.display = 'none';
       estaAutenticado = false;
+      usuarioActual = null;
+      tipoUsuario = null;
+      seccionActual = null;
+      limpiarEscuchasFirebase();
     });
 
-    document.getElementById('moduloRecepcion').addEventListener('click', () => {
-      seccionOpciones.style.display = 'none';
-      seccionEstudiantes.style.display = 'block';
-      seccionProfesores.style.display = 'none';
-      seccionTV.style.display = 'none';
-    });
-
-    document.getElementById('moduloProfesores').addEventListener('click', () => {
-      seccionOpciones.style.display = 'none';
-      seccionProfesores.style.display = 'block';
-      seccionEstudiantes.style.display = 'none';
-      seccionTV.style.display = 'none';
-    });
-
-    document.getElementById('moduloTV').addEventListener('click', async () => {
-      seccionOpciones.style.display = 'none';
-      seccionTV.style.display = 'block';
-      seccionEstudiantes.style.display = 'none';
-      seccionProfesores.style.display = 'none';
-
-      try {
-        if (seccionTV.requestFullscreen) {
-          await seccionTV.requestFullscreen();
-        } else if (seccionTV.webkitRequestFullscreen) {
-          await seccionTV.webkitRequestFullscreen();
-        } else if (seccionTV.msRequestFullscreen) {
-          await seccionTV.msRequestFullscreen();
+    // Event listeners para botones de opciones
+    document.querySelectorAll('.boton-opcion').forEach(boton => {
+      boton.addEventListener('click', (e) => {
+        const seccion = e.target.dataset.section;
+        const modulo = e.target.dataset.module;
+        
+        // Verificar permisos para recepción
+        if (modulo === 'recepcion' && tipoUsuario !== 'admin') {
+          return;
         }
-      } catch (e) {
-        console.warn("No se pudo activar fullscreen:", e);
-      }
-
-      seccionTV.classList.add('fullscreen');
+        
+        seccionActual = seccion;
+        establecerReferencias(seccion);
+        actualizarTitulos();
+        
+        opcionesContainer.classList.remove('active');
+        
+        if (modulo === 'recepcion') {
+          moduloRecepcion.classList.add('active');
+          inicializarEscuchasFirebase();
+        } else if (modulo === 'profesores') {
+          moduloProfesores.classList.add('active');
+          inicializarEscuchasFirebase();
+        } else if (modulo === 'tv') {
+          moduloTV.classList.add('active');
+          actualizarFechaTV();
+          activarFullscreen();
+          inicializarEscuchasFirebase();
+        }
+      });
     });
 
-    volverOpciones.addEventListener('click', () => {
-      seccionEstudiantes.style.display = 'none';
-      seccionOpciones.style.display = 'block';
+    document.getElementById('volverOpciones').addEventListener('click', () => {
+      mostrarOpciones();
+      limpiarEscuchasFirebase();
     });
 
-    volverOpcionesDesdeProfesores.addEventListener('click', () => {
-      seccionProfesores.style.display = 'none';
-      seccionOpciones.style.display = 'block';
+    document.getElementById('volverOpcionesDesdeProfesores').addEventListener('click', () => {
+      mostrarOpciones();
+      limpiarEscuchasFirebase();
     });
 
-    volverOpcionesDesdeTV.addEventListener('click', async () => {
-      seccionTV.style.display = 'none';
-      seccionOpciones.style.display = 'block';
-
+    document.getElementById('volverOpcionesDesdeTV').addEventListener('click', async () => {
       if (document.fullscreenElement) {
         try {
           await document.exitFullscreen();
@@ -734,41 +1268,169 @@
           console.warn("No se pudo salir de fullscreen:", e);
         }
       }
-      seccionTV.classList.remove('fullscreen');
+      mostrarOpciones();
+      limpiarEscuchasFirebase();
     });
+
+    async function activarFullscreen() {
+      try {
+        if (moduloTV.requestFullscreen) {
+          await moduloTV.requestFullscreen();
+        }
+      } catch (e) {
+        console.warn("No se pudo activar fullscreen:", e);
+      }
+      moduloTV.classList.add('fullscreen');
+    }
 
     botonAgregarItem.addEventListener('click', () => {
       addItemToReceptionList();
+      actualizarVisibilidadLabels();
     });
 
-    function clearAllLists() {
-      listaItems.innerHTML = '';
-      listaProfesores.innerHTML = '';
-      listaTV.innerHTML = '';
+    // Variables para escuchas de Firebase
+    let recepcionListener = null;
+    let cumpleanosListener = null;
+
+    // Funciones para manejar escuchas de Firebase
+    function limpiarEscuchasFirebase() {
+      if (recepcionListener) {
+        recepcionListener();
+        recepcionListener = null;
+      }
+      if (cumpleanosListener) {
+        cumpleanosListener();
+        cumpleanosListener = null;
+      }
     }
 
-    onValue(recepcionRef, (snapshot) => {
-      console.log("Evento onValue para recepción disparado.");
+    function inicializarEscuchasFirebase() {
+      limpiarEscuchasFirebase();
+      
+      // Limpiar listas primero para evitar el flash de contenido incorrecto
       clearAllLists();
-      const data = snapshot.val();
-      if (!data) {
-        console.log("No hay datos en recepción.");
-        return;
+      
+      // Escuchar cambios en recepción
+      recepcionListener = onValue(recepcionRef, (snapshot) => {
+        console.log(`Evento onValue para recepción de ${seccionActual} disparado.`);
+        clearAllLists();
+        const data = snapshot.val();
+        itemsData = data || {};
+        
+        if (!data) {
+          console.log(`No hay datos en recepción de ${seccionActual}.`);
+          actualizarVisibilidadLabels();
+          return;
+        }
+
+        // Filtrar datos por sección antes de renderizar
+        Object.entries(data).forEach(([key, val]) => {
+          addItemToReceptionList(val, key);
+          addItemToTeachersList(val, key);
+          addItemToTVList(val, key);
+        });
+        
+        ordenarListasAlfabeticamente();
+        actualizarVisibilidadLabels();
+        console.log(`Elementos de recepción de ${seccionActual} renderizados en la UI.`);
+      });
+
+      // Escuchar cambios en cumpleaños
+      cumpleanosListener = onValue(cumpleanosRef, (snapshot) => {
+        console.log(`Evento onValue para cumpleaños de ${seccionActual} disparado.`);
+        const data = snapshot.val();
+        if (!data) {
+          console.log(`No hay datos de cumpleaños disponibles para ${seccionActual}.`);
+          if (listaCumpleanos) {
+            listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+          }
+          return;
+        }
+        cargarCumpleanos(data);
+      });
+    }
+
+    // Funciones principales
+    function clearAllLists() {
+      // Guardar estados completados antes de limpiar
+      if (listaTV && listaTV.children.length > 0) {
+        const clave = `${seccionActual}_completados`;
+        estadosCompletados[clave] = estadosCompletados[clave] || {};
+        
+        Array.from(listaTV.children).forEach(item => {
+          const key = item.getAttribute('data-key');
+          if (key && item.classList.contains('completado')) {
+            estadosCompletados[clave][key] = true;
+          }
+        });
+      }
+      
+      if (listaItems) listaItems.innerHTML = '';
+      if (listaProfesores) listaProfesores.innerHTML = '';
+      if (listaTV) listaTV.innerHTML = '';
+      actualizarVisibilidadLabels();
+    }
+
+    function ordenarListasAlfabeticamente() {
+      // Ordenar lista de profesores
+      if (listaProfesores && listaProfesores.children.length > 0) {
+        const items = Array.from(listaProfesores.children);
+        items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+        listaProfesores.innerHTML = '';
+        items.forEach(item => listaProfesores.appendChild(item));
       }
 
-      Object.entries(data).forEach(([key, val]) => {
-        addItemToReceptionList(val, key);
-        addItemToTeachersList(val, key);
-        addItemToTVList(val, key);
-      });
-      console.log("Elementos de recepción renderizados en la UI.");
-    }, (error) => {
-        console.error("Error al leer datos de recepción de Firebase:", error);
-        alert("Error al cargar salidas: " + error.message + ". Revisa las reglas de seguridad de Firebase.");
-    });
+      // Ordenar lista de TV manteniendo los estados
+      if (listaTV && listaTV.children.length > 0) {
+        const items = Array.from(listaTV.children);
+        
+        // Obtener información de cada item
+        const itemsInfo = items.map(item => ({
+          texto: item.querySelector('.texto-contenido') ? item.querySelector('.texto-contenido').textContent : item.textContent,
+          key: item.getAttribute('data-key'),
+          elemento: item
+        }));
+        
+        // Ordenar por texto
+        itemsInfo.sort((a, b) => a.texto.localeCompare(b.texto));
+        
+        // Limpiar y reordenar
+        listaTV.innerHTML = '';
+        itemsInfo.forEach(info => {
+          listaTV.appendChild(info.elemento);
+        });
+      }
+    }
 
-    // FUNCIÓN MODIFICADA: Ahora con dos campos de fecha "Desde" y "Hasta"
+    function esSalidaDeHoy(data) {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      
+      if (data.checkbox === true) {
+        return true;
+      }
+      
+      if (data.dateFromValue && data.dateToValue) {
+        const fechaDesde = new Date(data.dateFromValue);
+        const fechaHasta = new Date(data.dateToValue);
+        const fechaHoy = new Date(todayStr);
+        
+        return fechaHoy >= fechaDesde && fechaHoy <= fechaHasta;
+      }
+      
+      if (data.dateFromValue && !data.dateToValue) {
+        const fechaDesde = new Date(data.dateFromValue);
+        const fechaHoy = new Date(todayStr);
+        
+        return fechaHoy >= fechaDesde;
+      }
+      
+      return false;
+    }
+
     function addItemToReceptionList(data = null, key = null) {
+      if (!listaItems) return;
+      
       const li = document.createElement('li');
       li.setAttribute('data-key', key);
 
@@ -792,7 +1454,7 @@
       
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
-      checkbox.checked = true; // Siempre empezará marcado
+      checkbox.checked = true;
 
       checkboxContainer.appendChild(checkboxLabel);
       checkboxContainer.appendChild(checkbox);
@@ -814,7 +1476,7 @@
       
       const dateFromInput = document.createElement('input');
       dateFromInput.type = 'date';
-      dateFromInput.style.display = 'none'; // Inicialmente oculto
+      dateFromInput.style.display = 'none';
       
       dateFromGroup.appendChild(dateFromLabel);
       dateFromGroup.appendChild(dateFromInput);
@@ -829,7 +1491,7 @@
       
       const dateToInput = document.createElement('input');
       dateToInput.type = 'date';
-      dateToInput.style.display = 'none'; // Inicialmente oculto
+      dateToInput.style.display = 'none';
       
       dateToGroup.appendChild(dateToLabel);
       dateToGroup.appendChild(dateToInput);
@@ -846,7 +1508,6 @@
         } else {
           dateFromInput.style.display = 'block';
           dateToInput.style.display = 'block';
-          // Establecer fecha por defecto (hoy) en formato yyyy-mm-dd
           if (!dateFromInput.value) {
             const today = new Date();
             const year = today.getFullYear();
@@ -864,7 +1525,6 @@
         }
       }
 
-      // Event listener para el checkbox
       checkbox.addEventListener('change', toggleDateInputs);
 
       if (data) {
@@ -878,7 +1538,7 @@
         if (data.dateToValue) {
           dateToInput.value = data.dateToValue;
         }
-        toggleDateInputs(); // Aplicar la lógica de mostrar/ocultar fechas
+        toggleDateInputs();
         [input1, input2, input3].forEach(i => i.disabled = true);
         checkbox.disabled = true;
         dateFromInput.disabled = true;
@@ -924,17 +1584,15 @@
           dateToValue: dateToInput.value || null
         };
 
-        console.log("Datos a guardar:", nuevoDato);
-
         if (key) {
-          update(ref(db, `recepcion/${key}`), nuevoDato)
-            .then(() => console.log(`Actualizado item de recepción con key: ${key}`))
+          update(ref(db, `recepcion_${seccionActual}/${key}`), nuevoDato)
+            .then(() => console.log(`Actualizado item de recepción ${seccionActual} con key: ${key}`))
             .catch(error => console.error("Error al actualizar:", error));
         } else {
           push(recepcionRef, nuevoDato)
             .then((newItemRef) => {
               li.setAttribute('data-key', newItemRef.key);
-              console.log(`Añadido nuevo item a recepción con key: ${newItemRef.key}`);
+              console.log(`Añadido nuevo item a recepción ${seccionActual} con key: ${newItemRef.key}`);
             })
             .catch(error => console.error("Error al guardar:", error));
         }
@@ -951,11 +1609,17 @@
 
       botonEliminar.addEventListener('click', () => {
         const itemKey = li.getAttribute('data-key');
-        if (itemKey) {
-          remove(ref(db, `recepcion/${itemKey}`));
-          console.log(`Eliminado item de recepción con key: ${itemKey}`);
+        if (itemKey && itemsData[itemKey]) {
+          remove(ref(db, `recepcion_${seccionActual}/${itemKey}`))
+            .then(() => {
+              console.log(`Eliminado item de recepción ${seccionActual} con key: ${itemKey}`);
+            })
+            .catch(error => {
+              console.error("Error al eliminar de Firebase:", error);
+            });
         } else {
           li.remove();
+          actualizarVisibilidadLabels();
           console.log("Eliminado item nuevo no guardado.");
         }
       });
@@ -965,8 +1629,8 @@
       li.appendChild(input2);
       li.appendChild(spanSeVaCon);
       li.appendChild(input3);
-      li.appendChild(checkboxContainer); // Añadir contenedor del checkbox
-      li.appendChild(datesContainer); // Añadir contenedor de fechas
+      li.appendChild(checkboxContainer);
+      li.appendChild(datesContainer);
       li.appendChild(botonEnviar);
       li.appendChild(botonEditar);
       li.appendChild(botonEliminar);
@@ -977,44 +1641,13 @@
         input1.value = '';
         input2.value = '';
         input3.value = '';
-        checkbox.checked = true; // Siempre empezará marcado para nuevos items
+        checkbox.checked = true;
       }
     }
 
-    // Función para verificar si una entrada debe mostrarse hoy
-    function esSalidaDeHoy(data) {
-      const today = new Date();
-      const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-      
-      // Si está marcado como "solo hoy", siempre se muestra
-      if (data.checkbox === true) {
-        return true;
-      }
-      
-      // Si no está marcado como "solo hoy", verificar el rango de fechas
-      if (data.dateFromValue && data.dateToValue) {
-        const fechaDesde = new Date(data.dateFromValue);
-        const fechaHasta = new Date(data.dateToValue);
-        const fechaHoy = new Date(todayStr);
-        
-        return fechaHoy >= fechaDesde && fechaHoy <= fechaHasta;
-      }
-      
-      // Si solo hay fecha "desde", verificar si hoy es mayor o igual
-      if (data.dateFromValue && !data.dateToValue) {
-        const fechaDesde = new Date(data.dateFromValue);
-        const fechaHoy = new Date(todayStr);
-        
-        return fechaHoy >= fechaDesde;
-      }
-      
-      // Si no hay fechas específicas y no está marcado "solo hoy", no mostrar
-      return false;
-    }
-
-    // FUNCIÓN MODIFICADA: Filtra solo las salidas del día actual
     function addItemToTeachersList(data, key) {
-      // Solo agregar si es una salida para hoy
+      if (!listaProfesores) return;
+      
       if (esSalidaDeHoy(data)) {
         const li = document.createElement('li');
         li.setAttribute('data-key', key);
@@ -1023,16 +1656,125 @@
       }
     }
 
-    // FUNCIÓN MODIFICADA: Filtra solo las salidas del día actual
     function addItemToTVList(data, key) {
-      // Solo agregar si es una salida para hoy
+      if (!listaTV) return;
+      
       if (esSalidaDeHoy(data)) {
         const li = document.createElement('li');
         li.setAttribute('data-key', key);
-        li.textContent = `${data.input1} de ${data.input2} se va con ${data.input3}`;
+        
+        // Crear un span para el contenido del texto
+        const textoSpan = document.createElement('span');
+        textoSpan.className = 'texto-contenido';
+        textoSpan.textContent = `${data.input1} de ${data.input2} se va con ${data.input3}`;
+        
+        li.appendChild(textoSpan);
+        
+        // Restaurar estado completado si existía antes
+        const clave = `${seccionActual}_completados`;
+        if (estadosCompletados[clave] && estadosCompletados[clave][key]) {
+          li.classList.add('completado');
+        }
+        
+        // Agregar event listener para marcar como completado
+        li.addEventListener('click', () => {
+          li.classList.toggle('completado');
+          
+          // Actualizar el estado guardado
+          const claveEstados = `${seccionActual}_completados`;
+          estadosCompletados[claveEstados] = estadosCompletados[claveEstados] || {};
+          
+          if (li.classList.contains('completado')) {
+            estadosCompletados[claveEstados][key] = true;
+          } else {
+            delete estadosCompletados[claveEstados][key];
+          }
+        });
+        
         listaTV.appendChild(li);
       }
     }
+
+    function cargarCumpleanos(data) {
+      if (!listaCumpleanos) return;
+      
+      listaCumpleanos.innerHTML = '';
+      
+      if (!data) {
+        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+        return;
+      }
+
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentDay = today.getDate();
+      const currentMonth = today.getMonth() + 1;
+
+      const cumpleanosDeHoy = Object.entries(data).filter(([key, val]) => {
+        const [day, month, year] = val.fecha.split('/');
+        return parseInt(day) === currentDay && parseInt(month) === currentMonth;
+      }).map(([key, val]) => ({
+        key,
+        ...val
+      }));
+
+      if (cumpleanosDeHoy.length === 0) {
+        listaCumpleanos.innerHTML = '<li style="text-align: center; color: #666;">No hay cumpleaños registrados para hoy.</li>';
+        return;
+      }
+
+      cumpleanosDeHoy.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+      cumpleanosDeHoy.forEach(cumple => {
+        const [day, month, birthYear] = cumple.fecha.split('/');
+        let age = currentYear - parseInt(birthYear);
+        
+        const birthMonthNum = parseInt(month);
+        const birthDayNum = parseInt(day);
+
+        if (currentMonth < birthMonthNum || (currentMonth === birthMonthNum && currentDay < birthDayNum)) {
+            age--;
+        }
+
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="cumpleanos-nombre">${cumple.nombre}</div>
+          <div class="cumpleanos-grado">${cumple.grado}</div>
+          <div class="cumpleanos-edad">Cumple ${age} años</div>
+          <div class="mensaje-felicitacion">¡Felicidades! 🎉</div>`;
+        listaCumpleanos.appendChild(li);
+      });
+    }
+
+    async function inicializarDatosCumpleanos(seccion) {
+      try {
+        const today = new Date();
+        const currentDay = String(today.getDate()).padStart(2, '0');
+        const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+        
+        const estudiantesPrueba = [
+          { nombre: "María González", grado: "5° Primaria", fecha: `${currentDay}/${currentMonth}/2010` },
+          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: `${currentDay}/${currentMonth}/2007` },
+          { nombre: "Ana López", grado: "1° Primaria", fecha: `${currentDay}/${currentMonth}/2008` }
+        ];
+
+        const cumpleanosRefTemp = ref(db, `cumpleanos_${seccion}`);
+        const snapshot = await get(cumpleanosRefTemp);
+        if (!snapshot.exists()) {
+          for (const estudiante of estudiantesPrueba) {
+            await push(cumpleanosRefTemp, estudiante);
+          }
+          console.log(`Datos de cumpleaños inicializados para ${seccion}:`, `${currentDay}/${currentMonth}`);
+        }
+      } catch (error) {
+        console.error(`Error al inicializar datos de cumpleaños para ${seccion}:`, error);
+      }
+    }
+
+    // Inicializar datos de cumpleaños para todas las secciones
+    ['kinder', 'elementary', 'smart'].forEach(seccion => {
+      inicializarDatosCumpleanos(seccion);
+    });
 
   </script>
 
