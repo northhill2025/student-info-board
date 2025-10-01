@@ -1229,35 +1229,42 @@
           return;
         }
         
+        // Si cambiamos de sección, limpiar escuchas anteriores
+        if (seccionActual !== seccion) {
+          limpiarEscuchasFirebase();
+        }
+        
         seccionActual = seccion;
         establecerReferencias(seccion);
         actualizarTitulos();
+        
+        // Inicializar escuchas si es la primera vez en esta sección
+        if (!recepcionListener) {
+          inicializarEscuchasFirebase();
+        }
         
         opcionesContainer.classList.remove('active');
         
         if (modulo === 'recepcion') {
           moduloRecepcion.classList.add('active');
-          inicializarEscuchasFirebase();
         } else if (modulo === 'profesores') {
           moduloProfesores.classList.add('active');
-          inicializarEscuchasFirebase();
         } else if (modulo === 'tv') {
           moduloTV.classList.add('active');
           actualizarFechaTV();
           activarFullscreen();
-          inicializarEscuchasFirebase();
         }
       });
     });
 
     document.getElementById('volverOpciones').addEventListener('click', () => {
       mostrarOpciones();
-      limpiarEscuchasFirebase();
+      // NO limpiar escuchas para mantener sincronización
     });
 
     document.getElementById('volverOpcionesDesdeProfesores').addEventListener('click', () => {
       mostrarOpciones();
-      limpiarEscuchasFirebase();
+      // NO limpiar escuchas para mantener sincronización
     });
 
     document.getElementById('volverOpcionesDesdeTV').addEventListener('click', async () => {
@@ -1269,7 +1276,7 @@
         }
       }
       mostrarOpciones();
-      limpiarEscuchasFirebase();
+      // NO limpiar escuchas para mantener sincronización
     });
 
     async function activarFullscreen() {
