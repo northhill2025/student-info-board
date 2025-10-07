@@ -1463,6 +1463,7 @@
     let recepcionListener = null;
     let cumpleanosListener = null;
     let completadosListener = null;
+    let intervalLimpieza = null;
 
     function limpiarEscuchasFirebase() {
       if (recepcionListener) {
@@ -1477,6 +1478,10 @@
         completadosListener();
         completadosListener = null;
       }
+      if (intervalLimpieza) {
+        clearInterval(intervalLimpieza);
+        intervalLimpieza = null;
+      }
     }
 
     function inicializarEscuchasFirebase() {
@@ -1486,6 +1491,10 @@
       
       limpiarSalidasPasadas();
       limpiarHistorialDomingo();
+      
+      intervalLimpieza = setInterval(() => {
+        limpiarSalidasPasadas();
+      }, 60000);
       
       completadosListener = onValue(estadosCompletadosRef, (snapshot) => {
         const data = snapshot.val();
@@ -1574,48 +1583,45 @@
     }
 
     async function limpiarSalidasPasadas() {
-      if (!recepcionRef) return;
+      const secciones = ['kinder', 'elementary', 'smart'];
       
-      try {
-        const snapshot = await get(recepcionRef);
-        if (!snapshot.exists()) return;
-        
-        const data = snapshot.val();
-        const now = new Date();
-        const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-        const currentHour = now.getHours();
-        
-        Object.entries(data).forEach(([key, val]) => {
-          let debeEliminar = false;
+      for (const seccion of secciones) {
+        try {
+          const recepcionRefTemp = ref(db, `recepcion_${seccion}`);
+          const snapshot = await get(recepcionRefTemp);
+          if (!snapshot.exists()) continue;
           
-          if (val.checkbox === true && val.dateFromValue) {
-            const fechaSalida = new Date(val.dateFromValue);
-            const fechaHoy = new Date(todayStr);
-            if (fechaHoy > fechaSalida) {
-              debeEliminar = true;
+          const data = snapshot.val();
+          const now = new Date();
+          const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+          
+          for (const [key, val] of Object.entries(data)) {
+            let debeEliminar = false;
+            
+            if (val.checkbox === true && val.dateFromValue) {
+              const fechaSalida = new Date(val.dateFromValue);
+              const fechaHoy = new Date(todayStr);
+              if (fechaHoy > fechaSalida) {
+                debeEliminar = true;
+              }
+            }
+            
+            if (val.dateFromValue && val.dateToValue && !val.checkbox) {
+              const fechaHasta = new Date(val.dateToValue);
+              const fechaHoy = new Date(todayStr);
+              if (fechaHoy > fechaHasta) {
+                debeEliminar = true;
+              }
+            }
+            
+            if (debeEliminar) {
+              await remove(ref(db, `recepcion_${seccion}/${key}`));
+              console.log(`Eliminada salida pasada de ${seccion} con key: ${key}`);
             }
           }
-          
-          if (val.dateFromValue && val.dateToValue && !val.checkbox) {
-            const fechaHasta = new Date(val.dateToValue);
-            const fechaHoy = new Date(todayStr);
-            if (fechaHoy > fechaHasta) {
-              debeEliminar = true;
-            }
-          }
-          
-          if (val.dateFromValue === todayStr && currentHour >= 18) {
-            debeEliminar = true;
-          }
-          
-          if (debeEliminar) {
-            remove(ref(db, `recepcion_${seccionActual}/${key}`))
-              .then(() => console.log(`Eliminada salida pasada con key: ${key}`))
-              .catch(error => console.error("Error al eliminar salida pasada:", error));
-          }
-        });
-      } catch (error) {
-        console.error("Error al limpiar salidas pasadas:", error);
+        } catch (error) {
+          console.error(`Error al limpiar salidas pasadas de ${seccion}:`, error);
+        }
       }
     }
 
@@ -1915,6 +1921,8 @@
           header.textContent = `Se van con: ${persona} (${items.length} estudiantes)`;
           grupoDiv.appendChild(header);
           
+          items.sort((a, b) => a.data.input1.localeCompare(b.data.input1));
+          
           items.forEach(({ key, data }) => {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'salida-grupal-item';
@@ -2123,34 +2131,35 @@
       }
     }
 
-    async function inicializarDatosCumpleanos(seccion) {
-      try {
-        const today = new Date();
-        const currentDay = String(today.getDate()).padStart(2, '0');
-        const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-        
-        const estudiantesPrueba = [
-          { nombre: "María González", grado: "5° Primaria", fecha: `${currentDay}/${currentMonth}/2010` },
-          { nombre: "Carlos Rodríguez", grado: "3° Secundaria", fecha: `${currentDay}/${currentMonth}/2007` },
-          { nombre: "Ana López", grado: "1° Primaria", fecha: `${currentDay}/${currentMonth}/2008` }
-        ];
-
-        const cumpleanosRefTemp = ref(db, `cumpleanos_${seccion}`);
-        const snapshot = await get(cumpleanosRefTemp);
-        if (!snapshot.exists()) {
-          for (const estudiante of estudiantesPrueba) {
-            await push(cumpleanosRefTemp, estudiante);
+    async function eliminarCumpleanosPrueba() {
+      const secciones = ['kinder', 'elementary', 'smart'];
+      
+      for (const seccion of secciones) {
+        try {
+          const cumpleanosRefTemp = ref(db, `cumpleanos_${seccion}`);
+          const snapshot = await get(cumpleanosRefTemp);
+          
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const today = new Date();
+            const currentDay = String(today.getDate()).padStart(2, '0');
+            const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
+            
+            for (const [key, val] of Object.entries(data)) {
+              const [day, month, year] = val.fecha.split('/');
+              if (day === currentDay && month === currentMonth) {
+                await remove(ref(db, `cumpleanos_${seccion}/${key}`));
+                console.log(`Eliminado cumpleaños de prueba en ${seccion}: ${val.nombre}`);
+              }
+            }
           }
-          console.log(`Datos de cumpleaños inicializados para ${seccion}:`, `${currentDay}/${currentMonth}`);
+        } catch (error) {
+          console.error(`Error al eliminar cumpleaños de prueba en ${seccion}:`, error);
         }
-      } catch (error) {
-        console.error(`Error al inicializar datos de cumpleaños para ${seccion}:`, error);
       }
     }
 
-    ['kinder', 'elementary', 'smart'].forEach(seccion => {
-      inicializarDatosCumpleanos(seccion);
-    });
+    eliminarCumpleanosPrueba();
 
   </script>
 
